@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-gray-50 border-t">
+  <footer class="fixed bottom-0 left-0 w-full bg-gray-50 border-t z-10">
     <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-5 gap-8">
       <div class="flex flex-col items-center space-y-2">
         <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="logo" class="w-8 h-8" />

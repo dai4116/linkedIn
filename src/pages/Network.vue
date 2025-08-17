@@ -1,156 +1,157 @@
 <template>
-  <div class="max-w-5xl mx-auto py-6 text-gray-800">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Left menu -->
-      <aside class="lg:col-span-1">
-        <div class="bg-white rounded-lg shadow">
-          <div class="px-4 py-3 border-b flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="inline-block w-4 h-4 rounded-full bg-gray-800"></span>
-              <span class="font-semibold text-sm">CONNECTIONS</span>
-            </div>
-            <span class="text-sm text-gray-500">{{ totalConnections.toLocaleString() }}</span>
-          </div>
-
-          <nav class="py-2 text-sm">
-            <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50">
-              <div class="flex items-center gap-3">
-                <span class="w-1 h-5 bg-blue-600 rounded-sm"></span>
-                <span class="text-gray-700">INVITATIONS</span>
-              </div>
+  <div class="min-h-screen bg-gray-100">
+    <div class="container mx-auto px-4 py-6 grid grid-cols-3 gap-6">
+      
+        <!-- Left menu -->
+        <aside class="lg:col-span-1">
+          <div class="bg-white rounded-lg shadow">
+            <div class="px-4 py-3 border-b flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <span class="h-2 w-2 rounded-full bg-amber-400"></span>
-                <span class="text-gray-500">{{ receivedInvites.length }}</span>
+                <span class="inline-block w-4 h-4 rounded-full bg-gray-800"></span>
+                <span class="font-semibold text-sm">CONNECTIONS</span>
               </div>
-            </button>
+              <span class="text-sm text-gray-500">{{ totalConnections.toLocaleString() }}</span>
+            </div>
 
-            <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50">
-              <div class="flex items-center gap-3">
-                <span class="w-1 h-5 bg-gray-200 rounded-sm"></span>
-                <span class="text-gray-700">TEAMMATES</span>
-              </div>
-              <span class="text-gray-500">0</span>
-            </button>
+            <nav class="py-2 text-sm">
+              <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+                <div class="flex items-center gap-3">
+                  <span class="w-1 h-5 bg-blue-600 rounded-sm"></span>
+                  <span class="text-gray-700">INVITATIONS</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="h-2 w-2 rounded-full bg-amber-400"></span>
+                  <span class="text-gray-500">{{ receivedInvites.length }}</span>
+                </div>
+              </button>
 
-            <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50">
-              <div class="flex items-center gap-3">
-                <span class="w-1 h-5 bg-gray-200 rounded-sm"></span>
-                <span class="text-gray-700">GROUPS</span>
-              </div>
-              <span class="text-gray-500">6</span>
-            </button>
+              <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+                <div class="flex items-center gap-3">
+                  <span class="w-1 h-5 bg-gray-200 rounded-sm"></span>
+                  <span class="text-gray-700">TEAMMATES</span>
+                </div>
+                <span class="text-gray-500">0</span>
+              </button>
 
-            <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50">
-              <div class="flex items-center gap-3">
-                <span class="w-1 h-5 bg-gray-200 rounded-sm"></span>
-                <span class="text-gray-700">PAGES</span>
-              </div>
-              <span class="text-gray-500">28</span>
-            </button>
+              <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+                <div class="flex items-center gap-3">
+                  <span class="w-1 h-5 bg-gray-200 rounded-sm"></span>
+                  <span class="text-gray-700">GROUPS</span>
+                </div>
+                <span class="text-gray-500">6</span>
+              </button>
 
-            <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50">
-              <div class="flex items-center gap-3">
-                <span class="w-1 h-5 bg-gray-200 rounded-sm"></span>
-                <span class="text-gray-700">HASHTAGS</span>
-              </div>
-              <span class="text-gray-500">8</span>
-            </button>
-          </nav>
-        </div>
-      </aside>
+              <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+                <div class="flex items-center gap-3">
+                  <span class="w-1 h-5 bg-gray-200 rounded-sm"></span>
+                  <span class="text-gray-700">PAGES</span>
+                </div>
+                <span class="text-gray-500">28</span>
+              </button>
 
-      <!-- Right content -->
-      <main class="lg:col-span-2 space-y-6">
-        <!-- Invitations -->
-        <section class="bg-white rounded-lg shadow overflow-hidden">
-          <!-- Tabs -->
-          <div class="flex">
-            <button
-              class="flex-1 px-4 py-3 text-sm font-semibold border-b"
-              :class="tab === 'received' ? 'text-blue-700 border-blue-600' : 'text-gray-500 border-transparent'"
-              @click="tab = 'received'"
-            >
-              RECEIVED
-            </button>
-            <button
-              class="flex-1 px-4 py-3 text-sm font-semibold border-b"
-              :class="tab === 'sent' ? 'text-blue-700 border-blue-600' : 'text-gray-500 border-transparent'"
-              @click="tab = 'sent'"
-            >
-              SENT
-            </button>
+              <button class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+                <div class="flex items-center gap-3">
+                  <span class="w-1 h-5 bg-gray-200 rounded-sm"></span>
+                  <span class="text-gray-700">HASHTAGS</span>
+                </div>
+                <span class="text-gray-500">8</span>
+              </button>
+            </nav>
           </div>
+        </aside>
 
-          <div class="px-4 py-3 text-sm text-gray-500 border-b">
-            <span v-if="tab === 'received'">
-              YOU HAVE <span class="text-blue-700 font-semibold">{{ receivedInvites.length }}</span> NEW CONNECTIONS
-            </span>
-            <span v-else>
-              YOU SENT <span class="text-blue-700 font-semibold">{{ sentInvites.length }}</span> INVITES
-            </span>
-          </div>
+        <!-- Right content -->
+        <main class="lg:col-span-2 space-y-6">
+          <!-- Invitations -->
+          <section class="bg-white rounded-lg shadow overflow-hidden">
+            <!-- Tabs -->
+            <div class="flex">
+              <button
+                class="flex-1 px-4 py-3 text-sm font-semibold border-b"
+                :class="tab === 'received' ? 'text-blue-700 border-blue-600' : 'text-gray-500 border-transparent'"
+                @click="tab = 'received'"
+              >
+                RECEIVED
+              </button>
+              <button
+                class="flex-1 px-4 py-3 text-sm font-semibold border-b"
+                :class="tab === 'sent' ? 'text-blue-700 border-blue-600' : 'text-gray-500 border-transparent'"
+                @click="tab = 'sent'"
+              >
+                SENT
+              </button>
+            </div>
 
-          <!-- List -->
-          <ul class="divide-y">
-            <li
-              v-for="item in (tab === 'received' ? receivedInvites : sentInvites)"
-              :key="item.id"
-              class="flex items-start gap-4 px-4 py-4"
-            >
-              <img :src="item.avatar" class="w-12 h-12 rounded-full object-cover" alt="" />
-              <div class="flex-1">
-                <div class="font-semibold text-gray-800">{{ item.name }}</div>
-                <div class="text-sm text-gray-500">{{ item.title }}</div>
-                <button class="text-xs text-blue-600 mt-1 hover:underline">
-                  {{ item.connections }} connections
-                </button>
-                <p class="mt-2 text-sm text-gray-600" v-if="item.note">{{ item.note }}</p>
-              </div>
+            <div class="px-4 py-3 text-sm text-gray-500 border-b">
+              <span v-if="tab === 'received'">
+                YOU HAVE <span class="text-blue-700 font-semibold">{{ receivedInvites.length }}</span> NEW CONNECTIONS
+              </span>
+              <span v-else>
+                YOU SENT <span class="text-blue-700 font-semibold">{{ sentInvites.length }}</span> INVITES
+              </span>
+            </div>
 
-              <div class="flex items-center gap-3">
-                <template v-if="tab === 'received'">
-                  <button class="px-4 py-2 rounded bg-blue-600 text-white text-sm" @click="accept(item.id)">
-                    ACCEPT
+            <!-- List -->
+            <ul class="divide-y">
+              <li
+                v-for="item in (tab === 'received' ? receivedInvites : sentInvites)"
+                :key="item.id"
+                class="flex items-start gap-4 px-4 py-4"
+              >
+                <img :src="item.avatar" class="w-12 h-12 rounded-full object-cover" alt="" />
+                <div class="flex-1">
+                  <div class="font-semibold text-gray-800">{{ item.name }}</div>
+                  <div class="text-sm text-gray-500">{{ item.title }}</div>
+                  <button class="text-xs text-blue-600 mt-1 hover:underline">
+                    {{ item.connections }} connections
                   </button>
-                  <button class="px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm" @click="decline(item.id)">
-                    DECLINE
-                  </button>
-                </template>
-                <template v-else>
-                  <button class="px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm">Pending</button>
-                  <button class="px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm" @click="withdraw(item.id)">
-                    WITHDRAW
-                  </button>
-                </template>
-              </div>
-            </li>
+                  <p class="mt-2 text-sm text-gray-600" v-if="item.note">{{ item.note }}</p>
+                </div>
 
-            <li v-if="(tab === 'received' ? receivedInvites : sentInvites).length === 0" class="px-4 py-10">
-              <p class="text-center text-sm text-gray-500">No invitations.</p>
-            </li>
-          </ul>
-        </section>
+                <div class="flex items-center gap-3">
+                  <template v-if="tab === 'received'">
+                    <button class="px-4 py-2 rounded bg-blue-600 text-white text-sm" @click="accept(item.id)">
+                      ACCEPT
+                    </button>
+                    <button class="px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm" @click="decline(item.id)">
+                      DECLINE
+                    </button>
+                  </template>
+                  <template v-else>
+                    <button class="px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm">Pending</button>
+                    <button class="px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm" @click="withdraw(item.id)">
+                      WITHDRAW
+                    </button>
+                  </template>
+                </div>
+              </li>
 
-        <!-- Recent connections -->
-        <section class="bg-white rounded-lg shadow">
-          <h3 class="px-4 py-3 text-sm font-semibold text-gray-700 border-b">RECENT CONNECTIONS</h3>
-          <div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <article
-              v-for="c in recent"
-              :key="c.id"
-              class="border rounded-lg px-4 py-3 flex items-center gap-4"
-            >
-              <img :src="c.avatar" class="w-12 h-12 rounded-full object-cover" alt="" />
-              <div class="flex-1">
-                <div class="font-semibold text-gray-800">{{ c.name }}</div>
-                <div class="text-sm text-gray-500">{{ c.title }}</div>
-                <div class="text-xs text-gray-400">{{ c.when }}</div>
-              </div>
-              <button class="text-sm px-3 py-1 rounded bg-blue-600 text-white">Message</button>
-            </article>
-          </div>
-        </section>
-      </main>
+              <li v-if="(tab === 'received' ? receivedInvites : sentInvites).length === 0" class="px-4 py-10">
+                <p class="text-center text-sm text-gray-500">No invitations.</p>
+              </li>
+            </ul>
+          </section>
+
+          <!-- Recent connections -->
+          <section class="bg-white rounded-lg shadow">
+            <h3 class="px-4 py-3 text-sm font-semibold text-gray-700 border-b">RECENT CONNECTIONS</h3>
+            <div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <article
+                v-for="c in recent"
+                :key="c.id"
+                class="border rounded-lg px-4 py-3 flex items-center gap-4"
+              >
+                <img :src="c.avatar" class="w-12 h-12 rounded-full object-cover" alt="" />
+                <div class="flex-1">
+                  <div class="font-semibold text-gray-800">{{ c.name }}</div>
+                  <div class="text-sm text-gray-500">{{ c.title }}</div>
+                  <div class="text-xs text-gray-400">{{ c.when }}</div>
+                </div>
+                <button class="text-sm px-3 py-1 rounded bg-blue-600 text-white">Message</button>
+              </article>
+            </div>
+          </section>
+        </main>
     </div>
   </div>
 </template>
