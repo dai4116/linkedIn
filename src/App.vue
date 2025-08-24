@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import NavBar from './components/NavBar.vue'
 import Footer from './components/Footer.vue'
+import OtherPanel from './components/OtherPanel.vue'
+import { ref } from 'vue'
+
+
+const showOther = ref(false)
 </script>
 
 <template>
   <div>
-    <NavBar />
+    <NavBar @open-other="showOther = true" />
     <main class="flex-1">
       <router-view />
+      <OtherPanel v-if="showOther" @close="showOther = false" />
     </main>
     <Footer />
   </div>

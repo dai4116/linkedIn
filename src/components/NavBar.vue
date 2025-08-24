@@ -40,7 +40,12 @@
           </div>
         </div>
       </div>
-      <div class="text-xs text-gray-500 font-semibold">OTHER</div>
+      <button
+      class="text-xs text-gray-500 font-semibold hover:text-gray-700"
+      @click="emit('open-other')"
+    >
+      OTHER
+    </button>
     </div>
   </nav>
 </template>
@@ -48,4 +53,8 @@
 <script setup lang="ts">
 import { Search } from 'lucide-vue-next'
 import NavItem from './NavItem.vue'
+
+const emit = defineEmits<{
+  (e: 'open-other'): void
+}>()
 </script>
