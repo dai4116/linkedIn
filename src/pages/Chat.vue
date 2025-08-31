@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-100">
-    <div class="container mx-auto px-4 py-6 grid grid-cols-3 gap-6">
+    <div class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
       <aside class="bg-white p-4 rounded-lg shadow">
         <h6 class="font-semibold text-gray-800 mb-4 uppercase text-xs">Chats</h6>
         <ul class="space-y-2">
@@ -33,7 +33,7 @@
         </button>
       </aside>
 
-      <main class="col-span-2 flex flex-col bg-white p-4 rounded-lg shadow">
+      <main class="lg:col-span-2 flex flex-col bg-white p-4 rounded-lg shadow">
         <header class="flex items-center justify-between mb-4">
           <div class="font-semibold text-gray-800">
             Chat with <span class="text-blue-600">{{ selectedChat?.name }}</span>

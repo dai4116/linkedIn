@@ -1,18 +1,18 @@
 <template>
-  <div class="max-w-5xl mx-auto p-6 text-gray-800">
+  <div class="max-w-5xl mx-auto p-4 md:p-6 text-gray-800">
     <!-- 兩欄佈局：左 主要內容，右 側欄 -->
     <div class="flex flex-col lg:flex-row gap-6">
 
       <!-- 左：主內容 -->
       <div class="flex-1 space-y-6">
         <!-- Header -->
-        <div class="bg-white shadow rounded-lg p-6 flex flex-col md:flex-row items-center gap-6">
-          <img class="w-24 h-24 rounded-full object-cover" src="https://i.pravatar.cc/150?img=32" alt="avatar" />
+        <div class="bg-white shadow rounded-lg p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-6">
+          <img class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover" src="https://i.pravatar.cc/150?img=32" alt="avatar" />
           <div class="flex-1">
             <h1 class="text-2xl font-bold">Dmitry Kargaev</h1>
             <p class="text-gray-500">Freelance UX/UI Designer · 80+ projects</p>
             <p class="text-sm text-gray-400">Saint Petersburg, Russia</p>
-            <div class="mt-2 space-x-2">
+            <div class="mt-2 flex flex-col sm:flex-row gap-2">
               <button class="bg-blue-600 text-white px-4 py-1 rounded">Contact Info</button>
               <button class="border border-blue-600 text-blue-600 px-4 py-1 rounded">1,043 Connections</button>
             </div>
@@ -22,8 +22,8 @@
         <!-- About -->
         <section class="bg-white shadow mt-6 rounded-lg">
           <!-- Tabs -->
-          <div class="flex border-b">
-            <button v-for="tab in tabs" :key="tab.key" class="flex-1 py-3 text-center font-medium" :class="[
+          <div class="flex border-b overflow-x-auto">
+            <button v-for="tab in tabs" :key="tab.key" class="shrink-0 md:flex-1 min-w-[120px] py-3 text-center font-medium text-xs md:text-sm" :class="[
               activeTab === tab.key
                 ? 'bg-blue-600 text-white'
                 : 'text-gray-600 hover:text-gray-800',
@@ -69,9 +69,9 @@
         </section>
 
         <!-- Projects -->
-        <section class="bg-white shadow rounded-lg p-6">
+        <section class="bg-white shadow rounded-lg p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-4">Projects</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div v-for="project in projects" :key="project.title" class="rounded overflow-hidden border">
               <img :src="project.image" alt="" class="w-full h-32 object-cover" />
               <div class="p-2">
@@ -83,9 +83,9 @@
         </section>
 
         <!-- Skills & Endorsements -->
-        <section class="bg-white shadow rounded-lg p-6">
+        <section class="bg-white shadow rounded-lg p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-2">Skills & Endorsements</h2>
-          <div class="flex gap-4">
+          <div class="flex flex-wrap gap-2 md:gap-4">
             <div v-for="skill in skills" :key="skill.name" class="bg-gray-100 rounded px-3 py-1 text-sm">
               {{ skill.name }} ({{ skill.count }})
             </div>
@@ -93,7 +93,7 @@
         </section>
 
         <!-- Experience -->
-        <section class="bg-white shadow rounded-lg p-6">
+        <section class="bg-white shadow rounded-lg p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-2">Experience</h2>
           <div v-for="exp in experience" :key="exp.title" class="mb-4">
             <p class="font-bold">{{ exp.title }}</p>
@@ -106,7 +106,7 @@
       <!-- 右：側欄 -->
       <aside class="w-full lg:w-64 flex-shrink-0 space-y-6">
         <!-- Your Dashboard -->
-        <section class="bg-white shadow rounded-lg p-6">
+        <section class="bg-white shadow rounded-lg p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">Your Dashboard</h2>
           <div class="space-y-4">
             <div>
@@ -125,7 +125,7 @@
         </section>
 
         <!-- Visitors -->
-        <section class="bg-white shadow rounded-lg p-6">
+        <section class="bg-white shadow rounded-lg p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">Visitors</h2>
           <ul class="space-y-4">
             <li v-for="v in visitors" :key="v.name" class="flex items-center gap-3">
@@ -140,7 +140,7 @@
         </section>
 
         <!-- You May Like These Courses -->
-        <section class="bg-white shadow rounded-lg p-6">
+        <section class="bg-white shadow rounded-lg p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">You May Like These Courses</h2>
           <ul class="space-y-4">
             <li v-for="c in courses" :key="c.title" class="flex gap-3">

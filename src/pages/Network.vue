@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-100">
-    <div class="container mx-auto px-4 py-6 grid grid-cols-3 gap-6">
+    <div class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
       
         <!-- Left menu -->
         <aside class="lg:col-span-1">
@@ -96,30 +96,32 @@
               <li
                 v-for="item in (tab === 'received' ? receivedInvites : sentInvites)"
                 :key="item.id"
-                class="flex items-start gap-4 px-4 py-4"
+                class="px-4 py-4 flex flex-col sm:flex-row gap-4"
               >
-                <img :src="item.avatar" class="w-12 h-12 rounded-full object-cover" alt="" />
-                <div class="flex-1">
-                  <div class="font-semibold text-gray-800">{{ item.name }}</div>
-                  <div class="text-sm text-gray-500">{{ item.title }}</div>
-                  <button class="text-xs text-blue-600 mt-1 hover:underline">
-                    {{ item.connections }} connections
-                  </button>
-                  <p class="mt-2 text-sm text-gray-600" v-if="item.note">{{ item.note }}</p>
+                <div class="flex items-start gap-3 flex-1">
+                  <img :src="item.avatar" class="w-12 h-12 rounded-full object-cover" alt="" />
+                  <div class="flex-1">
+                    <div class="font-semibold text-gray-800">{{ item.name }}</div>
+                    <div class="text-sm text-gray-500">{{ item.title }}</div>
+                    <button class="text-xs text-blue-600 mt-1 hover:underline">
+                      {{ item.connections }} connections
+                    </button>
+                    <p class="mt-2 text-sm text-gray-600" v-if="item.note">{{ item.note }}</p>
+                  </div>
                 </div>
 
-                <div class="flex items-center gap-3">
+                <div class="w-full sm:w-auto grid grid-cols-2 gap-2 sm:flex sm:items-center sm:gap-3">
                   <template v-if="tab === 'received'">
-                    <button class="px-4 py-2 rounded bg-blue-600 text-white text-sm" @click="accept(item.id)">
+                    <button class="w-full sm:w-auto px-4 py-2 rounded bg-blue-600 text-white text-sm" @click="accept(item.id)">
                       ACCEPT
                     </button>
-                    <button class="px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm" @click="decline(item.id)">
+                    <button class="w-full sm:w-auto px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm" @click="decline(item.id)">
                       DECLINE
                     </button>
                   </template>
                   <template v-else>
-                    <button class="px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm">Pending</button>
-                    <button class="px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm" @click="withdraw(item.id)">
+                    <button class="w-full sm:w-auto px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm">Pending</button>
+                    <button class="w-full sm:w-auto px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm" @click="withdraw(item.id)">
                       WITHDRAW
                     </button>
                   </template>

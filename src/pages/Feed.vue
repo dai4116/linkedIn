@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-screen bg-gray-100">
-    <div class="container mx-auto px-4 py-6 grid grid-cols-3 gap-6">
+    <div class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- <div class="flex flex-col lg:flex-row gap-6"> -->
-        <main class="col-span-2 space-y-6">
+        <main class="lg:col-span-2 space-y-6">
           <!-- 新貼文區 -->
           <section class="bg-white shadow rounded-lg p-6">
             <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">NEW POST</h2>

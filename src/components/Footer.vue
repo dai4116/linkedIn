@@ -1,7 +1,52 @@
 <template>
-  <footer class="fixed bottom-0 left-0 w-full bg-gray-50 border-t z-10">
-    <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-5 gap-8">
-      <div class="flex flex-col items-center space-y-2">
+  <footer class="md:fixed bottom-0 left-0 w-full bg-gray-50 border-t z-10">
+    <!-- Mobile, compact -->
+    <div class="md:hidden max-w-7xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="logo" class="w-6 h-6" />
+          <span class="text-sm font-semibold">LinkedIn</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <select class="border border-gray-300 rounded px-2 py-1 text-xs">
+            <option>English</option>
+            <option>简体中文</option>
+            <option>Español</option>
+            <option>日本語</option>
+          </select>
+          <button class="p-2 rounded hover:bg-gray-100" @click="mobileOpen = !mobileOpen" aria-label="Toggle footer links">
+            <ChevronDownIcon class="w-4 h-4 text-gray-600" :class="{ 'transform rotate-180': mobileOpen }" />
+          </button>
+        </div>
+      </div>
+      <div v-show="mobileOpen" class="mt-2 grid grid-cols-2 gap-x-6 gap-y-2 text-xs text-gray-600">
+        <a href="#" class="hover:underline">About</a>
+        <a href="#" class="hover:underline">Careers</a>
+        <a href="#" class="hover:underline">Advertising</a>
+        <a href="#" class="hover:underline">Small Business</a>
+        <a href="#" class="hover:underline">Talent Solutions</a>
+        <a href="#" class="hover:underline">Marketing Solutions</a>
+        <a href="#" class="hover:underline">Sales Solutions</a>
+        <a href="#" class="hover:underline">Safety Center</a>
+        <a href="#" class="hover:underline">Community Guidelines</a>
+        <a href="#" class="hover:underline">Privacy &amp; Terms</a>
+        <a href="#" class="hover:underline">Mobile App</a>
+        <div class="col-span-2 flex gap-2 mt-2">
+          <button class="flex-1 flex items-center justify-center px-3 py-1.5 border border-blue-600 text-blue-600 rounded text-xs font-medium">
+            <HelpCircleIcon class="w-4 h-4 mr-2" />
+            Questions?
+          </button>
+          <button class="flex-1 flex items-center justify-center px-3 py-1.5 border border-gray-300 text-gray-700 rounded text-xs font-medium">
+            <SettingsIcon class="w-4 h-4 mr-2" />
+            Settings
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop, full -->
+    <div class="hidden md:grid max-w-7xl mx-auto px-6 py-6 md:py-8 grid-cols-1 md:grid-cols-5 gap-6 md:gap-8">
+      <div class="flex flex-col items-center md:items-start space-y-2">
         <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="logo" class="w-8 h-8" />
         <span class="text-sm font-bold">LinkedIn</span>
       </div>
@@ -61,9 +106,11 @@
 </template>
 
 <script setup lang="ts">
-import { Linkedin as LinkedinIcon, HelpCircle as HelpCircleIcon, Settings as SettingsIcon } from 'lucide-vue-next'
+import { HelpCircle as HelpCircleIcon, Settings as SettingsIcon, ChevronDown as ChevronDownIcon } from 'lucide-vue-next'
+import { ref } from 'vue'
+
+const mobileOpen = ref(false)
 </script>
 
 <style scoped>
-/* 全部用 Tailwind，就不另外寫這裡 */
 </style>

@@ -1,10 +1,10 @@
 <template>
   <div class="min-h-screen bg-gray-100">
-    <div class="container mx-auto px-4 py-6 grid grid-cols-3 gap-6">
-      <main class="col-span-2 space-y-6">
-        <div class="bg-white p-4 rounded-lg shadow flex items-center space-x-4">
+    <div class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <main class="lg:col-span-2 space-y-6">
+        <div class="bg-white p-4 rounded-lg shadow flex flex-col lg:flex-row items-stretch lg:items-center gap-3 lg:gap-4">
           <div class="uppercase text-xs font-semibold text-gray-500">YOUR DREAM JOB IS HERE</div>
-          <div class="flex-1 relative">
+          <div class="relative w-full lg:flex-1">
             <input
               type="text"
               placeholder="Search jobs"
@@ -12,7 +12,6 @@
             />
             <MagnifyingGlassIcon class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" />
           </div>
-          <Bars3Icon class="w-6 h-6 text-gray-500 cursor-pointer" />
         </div>
 
         <section>
@@ -21,15 +20,15 @@
             <div
               v-for="job in jobsForYou"
               :key="job.id"
-              class="bg-white p-4 rounded-lg shadow grid grid-cols-8 items-center gap-4"
+              class="bg-white p-4 rounded-lg shadow grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-8 items-center gap-4"
             >
-              <img :src="job.logo" alt="" class="w-10 h-10 object-cover rounded-lg col-span-1" />
-              <div class="col-span-6 space-y-1">
+              <img :src="job.logo" alt="" class="w-10 h-10 object-cover rounded-lg sm:col-span-1 lg:col-span-1" />
+              <div class="sm:col-span-4 lg:col-span-6 space-y-1">
                 <h5 class="font-semibold text-gray-800">{{ job.title }}</h5>
                 <p class="text-sm text-gray-500">{{ job.company }} · {{ job.location }}</p>
                 <p class="text-xs text-gray-500 truncate">{{ job.description }}</p>
               </div>
-              <button class="px-4 py-2 rounded bg-blue-600 text-white text-sm">MORE</button>
+              <button class="px-4 py-2 rounded bg-blue-600 text-white text-sm sm:col-span-1 lg:col-span-1 w-full sm:w-auto mt-2 sm:mt-0 sm:justify-self-end">MORE</button>
             </div>
           </div>
         </section>
@@ -40,15 +39,15 @@
             <div
               v-for="job in newJobs"
               :key="job.id"
-              class="bg-white p-4 rounded-lg shadow grid grid-cols-8 items-center gap-4"
+              class="bg-white p-4 rounded-lg shadow grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-8 items-center gap-4"
             >
-              <img :src="job.logo" alt="" class="w-10 h-10 object-cover rounded-lg col-span-1" />
-              <div class="col-span-6 space-y-1">
+              <img :src="job.logo" alt="" class="w-10 h-10 object-cover rounded-lg sm:col-span-1 lg:col-span-1" />
+              <div class="sm:col-span-4 lg:col-span-6 space-y-1">
                 <h5 class="font-semibold text-gray-800">{{ job.title }}</h5>
                 <p class="text-sm text-gray-500">{{ job.company }} · {{ job.location }}</p>
                 <p class="text-xs text-gray-500 truncate">{{ job.description }}</p>
               </div>
-              <button class="px-4 py-2 rounded bg-blue-600 text-white text-sm">MORE</button>
+              <button class="px-4 py-2 rounded bg-blue-600 text-white text-sm sm:col-span-1 lg:col-span-1 w-full sm:w-auto mt-2 sm:mt-0 sm:justify-self-end">MORE</button>
             </div>
           </div>
         </section>
