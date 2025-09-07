@@ -101,7 +101,9 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { ref } from 'vue'
+import { useEscapeKey } from '../composables/useEscapeKey'
+import { useClickOutside } from '../composables/useClickOutside'
 
 type Job = { id: string; title: string; company: string; logo: string; to: string }
 type User = { id: string; name: string; subtitle: string; avatar: string; to: string }
@@ -126,21 +128,6 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 
 const panelEl = ref<HTMLElement | null>(null)
 
-const onKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'Escape') emit('close')
-}
-
-const onDocClick = (e: MouseEvent) => {
-  const el = panelEl.value
-  if (el && !el.contains(e.target as Node)) emit('close')
-}
-
-onMounted(() => {
-  document.addEventListener('keydown', onKeydown)
-  document.addEventListener('mousedown', onDocClick)
-})
-onBeforeUnmount(() => {
-  document.removeEventListener('keydown', onKeydown)
-  document.removeEventListener('mousedown', onDocClick)
-})
+useEscapeKey(() => emit('close'))
+useClickOutside(panelEl, () => emit('close'))
 </script>

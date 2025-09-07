@@ -1,7 +1,8 @@
 <template>
-  <footer class="md:fixed bottom-0 left-0 w-full bg-gray-50 border-t z-10">
+  <footer class="w-full bg-gray-50 border-t">
     <!-- Mobile, compact -->
-    <div class="md:hidden max-w-7xl mx-auto px-4 py-3">
+    <div class="md:hidden">
+      <Container class="py-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="logo" class="w-6 h-6" />
@@ -42,11 +43,14 @@
           </button>
         </div>
       </div>
+      </Container>
     </div>
 
     <!-- Desktop, full -->
-    <div class="hidden md:grid max-w-7xl mx-auto px-6 py-6 md:py-8 grid-cols-1 md:grid-cols-5 gap-6 md:gap-8">
-      <div class="flex flex-col items-center md:items-start space-y-2">
+    <div class="hidden md:block">
+      <Container class="py-6 md:py-8">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8">
+        <div class="flex flex-col items-center md:items-start space-y-2">
         <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="logo" class="w-8 h-8" />
         <span class="text-sm font-bold">LinkedIn</span>
       </div>
@@ -101,6 +105,8 @@
           <option>日本語</option>
         </select>
       </div>
+        </div>
+      </Container>
     </div>
   </footer>
 </template>
@@ -108,6 +114,7 @@
 <script setup lang="ts">
 import { HelpCircle as HelpCircleIcon, Settings as SettingsIcon, ChevronDown as ChevronDownIcon } from 'lucide-vue-next'
 import { ref } from 'vue'
+import Container from './common/Container.vue'
 
 const mobileOpen = ref(false)
 </script>

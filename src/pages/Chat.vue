@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-100">
     <div class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <aside class="bg-white p-4 rounded-lg shadow">
+      <Card as="aside" class="p-4">
         <h6 class="font-semibold text-gray-800 mb-4 uppercase text-xs">Chats</h6>
         <ul class="space-y-2">
           <li
@@ -28,12 +28,10 @@
             ></span>
           </li>
         </ul>
-        <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg">
-          Start new chat
-        </button>
-      </aside>
+        <BaseButton block>Start new chat</BaseButton>
+      </Card>
 
-      <main class="lg:col-span-2 flex flex-col bg-white p-4 rounded-lg shadow">
+      <Card as="main" class="lg:col-span-2 p-4 flex flex-col">
         <header class="flex items-center justify-between mb-4">
           <div class="font-semibold text-gray-800">
             Chat with <span class="text-blue-600">{{ selectedChat?.name }}</span>
@@ -89,13 +87,15 @@
             <ArrowUpTrayIcon class="w-5 h-5 text-white" />
           </button>
         </div>
-      </main>
+      </Card>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import BaseButton from '../components/common/BaseButton.vue'
+import Card from '../components/common/Card.vue'
 import {
   PaperClipIcon,
   ArrowUpTrayIcon

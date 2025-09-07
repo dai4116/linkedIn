@@ -4,7 +4,7 @@
       <!-- <div class="flex flex-col lg:flex-row gap-6"> -->
         <main class="lg:col-span-2 space-y-6">
           <!-- 新貼文區 -->
-          <section class="bg-white shadow rounded-lg p-6">
+          <Card>
             <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">NEW POST</h2>
             <textarea
               v-model="newPostText"
@@ -12,14 +12,9 @@
               class="w-full h-24 p-3 border rounded resize-none focus:outline-none"
             ></textarea>
             <div class="flex justify-end mt-2">
-              <button
-                @click="submitPost"
-                class="bg-blue-600 text-white px-4 py-1 rounded"
-              >
-                Post
-              </button>
+              <BaseButton variant="primary" size="sm" @click="submitPost">Post</BaseButton>
             </div>
-          </section>
+          </Card>
 
           <!-- 排序功能 -->
           <div class="flex justify-end items-center text-sm text-gray-500">
@@ -31,10 +26,11 @@
           </div>
 
           <!-- 動態渲染貼文列表 -->
-          <article
+          <Card
             v-for="post in sortedPosts"
             :key="post.id"
-            class="bg-white shadow rounded-lg p-6 space-y-3"
+            as="article"
+            class="p-6 space-y-3"
           >
             <header class="flex items-center space-x-3">
               <img
@@ -60,20 +56,20 @@
               <span>💬 {{ post.comments }}</span>
               <button class="ml-auto text-blue-600 font-semibold">Share</button>
             </footer>
-          </article>
+          </Card>
         </main>
 
         <aside class="w-full flex-shrink-0 space-y-6">
-        <div class="bg-white shadow rounded-lg p-6 text-center space-y-2">
+        <Card class="text-center space-y-2">
           <img src="https://randomuser.me/api/portraits/men/47.jpg" class="w-20 h-20 rounded-full mx-auto"/>
           <p class="font-bold">Dmitry Kargaev</p>
           <p class="text-xs text-gray-500">
             Freelance UX/UI designer, 800+ projects in web & mobile. Open to offers.
           </p>
-          <button class="bg-blue-600 text-white w-full py-1 rounded">Write New Article</button>
-        </div>
+          <BaseButton class="w-full" size="sm">Write New Article</BaseButton>
+        </Card>
 
-        <div class="bg-white shadow rounded-lg p-6">
+        <Card>
           <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">My Groups</h2>
           <ul class="space-y-2 text-sm">
             <li class="flex items-center space-x-2">
@@ -90,9 +86,9 @@
             </li>
           </ul>
           <button class="text-blue-600 mt-2 text-xs">Show All (8)</button>
-        </div>
+        </Card>
 
-        <div class="bg-white shadow rounded-lg p-6">
+        <Card>
           <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">Followed Hashtags</h2>
           <div class="flex flex-wrap gap-2 text-xs">
             <span class="bg-gray-100 px-2 py-1 rounded">#work</span>
@@ -102,16 +98,16 @@
             <span class="bg-gray-100 px-2 py-1 rounded">#ui</span>
             <span class="bg-gray-100 px-2 py-1 rounded">#freelance</span>
           </div>
-        </div>
+        </Card>
 
-        <div class="bg-white shadow rounded-lg p-6">
+        <Card>
           <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">Trending Articles</h2>
           <ul class="space-y-1 text-sm">
             <li>• How I make cool designs?</li>
             <li>• Advices for young HR-managers</li>
             <li>• A little about usability testing</li>
           </ul>
-        </div>
+        </Card>
         </aside>
       <!-- </div> -->
     </div>
@@ -120,6 +116,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import Card from '../components/common/Card.vue'
+import BaseButton from '../components/common/BaseButton.vue'
 
 interface Author {
   id: number

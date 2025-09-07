@@ -4,7 +4,7 @@
       
         <!-- Left menu -->
         <aside class="lg:col-span-1">
-          <div class="bg-white rounded-lg shadow">
+          <Card as="div">
             <div class="px-4 py-3 border-b flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <span class="inline-block w-4 h-4 rounded-full bg-gray-800"></span>
@@ -57,13 +57,13 @@
                 <span class="text-gray-500">8</span>
               </button>
             </nav>
-          </div>
+          </Card>
         </aside>
 
         <!-- Right content -->
         <main class="lg:col-span-2 space-y-6">
           <!-- Invitations -->
-          <section class="bg-white rounded-lg shadow overflow-hidden">
+          <Card as="section" class="overflow-hidden">
             <!-- Tabs -->
             <div class="flex">
               <button
@@ -112,18 +112,12 @@
 
                 <div class="w-full sm:w-auto grid grid-cols-2 gap-2 sm:flex sm:items-center sm:gap-3">
                   <template v-if="tab === 'received'">
-                    <button class="w-full sm:w-auto px-4 py-2 rounded bg-blue-600 text-white text-sm" @click="accept(item.id)">
-                      ACCEPT
-                    </button>
-                    <button class="w-full sm:w-auto px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm" @click="decline(item.id)">
-                      DECLINE
-                    </button>
+                    <BaseButton class="w-full sm:w-auto" size="sm" @click="accept(item.id)">ACCEPT</BaseButton>
+                    <BaseButton class="w-full sm:w-auto" size="sm" variant="outline" @click="decline(item.id)">DECLINE</BaseButton>
                   </template>
                   <template v-else>
                     <button class="w-full sm:w-auto px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm">Pending</button>
-                    <button class="w-full sm:w-auto px-4 py-2 rounded bg-gray-100 text-gray-600 text-sm" @click="withdraw(item.id)">
-                      WITHDRAW
-                    </button>
+                    <BaseButton class="w-full sm:w-auto" size="sm" variant="outline" @click="withdraw(item.id)">WITHDRAW</BaseButton>
                   </template>
                 </div>
               </li>
@@ -132,10 +126,10 @@
                 <p class="text-center text-sm text-gray-500">No invitations.</p>
               </li>
             </ul>
-          </section>
+          </Card>
 
           <!-- Recent connections -->
-          <section class="bg-white rounded-lg shadow">
+          <Card as="section">
             <h3 class="px-4 py-3 text-sm font-semibold text-gray-700 border-b">RECENT CONNECTIONS</h3>
             <div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <article
@@ -149,10 +143,10 @@
                   <div class="text-sm text-gray-500">{{ c.title }}</div>
                   <div class="text-xs text-gray-400">{{ c.when }}</div>
                 </div>
-                <button class="text-sm px-3 py-1 rounded bg-blue-600 text-white">Message</button>
+                <BaseButton size="sm">Message</BaseButton>
               </article>
             </div>
-          </section>
+          </Card>
         </main>
     </div>
   </div>
@@ -160,6 +154,8 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import BaseButton from '../components/common/BaseButton.vue'
+import Card from '../components/common/Card.vue'
 
 type Invite = {
   id: number

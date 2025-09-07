@@ -6,21 +6,21 @@
       <!-- 左：主內容 -->
       <div class="flex-1 space-y-6">
         <!-- Header -->
-        <div class="bg-white shadow rounded-lg p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-6">
+        <Card as="div" class="p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-6">
           <img class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover" src="https://i.pravatar.cc/150?img=32" alt="avatar" />
           <div class="flex-1">
             <h1 class="text-2xl font-bold">Dmitry Kargaev</h1>
             <p class="text-gray-500">Freelance UX/UI Designer · 80+ projects</p>
             <p class="text-sm text-gray-400">Saint Petersburg, Russia</p>
             <div class="mt-2 flex flex-col sm:flex-row gap-2">
-              <button class="bg-blue-600 text-white px-4 py-1 rounded">Contact Info</button>
-              <button class="border border-blue-600 text-blue-600 px-4 py-1 rounded">1,043 Connections</button>
+              <BaseButton size="sm">Contact Info</BaseButton>
+              <BaseButton variant="outline" size="sm">1,043 Connections</BaseButton>
             </div>
           </div>
-        </div>
+        </Card>
 
         <!-- About -->
-        <section class="bg-white shadow mt-6 rounded-lg">
+        <Card as="section" class="mt-6">
           <!-- Tabs -->
           <div class="flex border-b overflow-x-auto">
             <button v-for="tab in tabs" :key="tab.key" class="shrink-0 md:flex-1 min-w-[120px] py-3 text-center font-medium text-xs md:text-sm" :class="[
@@ -66,10 +66,10 @@
               </ul>
             </div>
           </div>
-        </section>
+        </Card>
 
         <!-- Projects -->
-        <section class="bg-white shadow rounded-lg p-4 md:p-6">
+        <Card as="section" class="p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-4">Projects</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div v-for="project in projects" :key="project.title" class="rounded overflow-hidden border">
@@ -80,33 +80,33 @@
               </div>
             </div>
           </div>
-        </section>
+        </Card>
 
         <!-- Skills & Endorsements -->
-        <section class="bg-white shadow rounded-lg p-4 md:p-6">
+        <Card as="section" class="p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-2">Skills & Endorsements</h2>
           <div class="flex flex-wrap gap-2 md:gap-4">
             <div v-for="skill in skills" :key="skill.name" class="bg-gray-100 rounded px-3 py-1 text-sm">
               {{ skill.name }} ({{ skill.count }})
             </div>
           </div>
-        </section>
+        </Card>
 
         <!-- Experience -->
-        <section class="bg-white shadow rounded-lg p-4 md:p-6">
+        <Card as="section" class="p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-2">Experience</h2>
           <div v-for="exp in experience" :key="exp.title" class="mb-4">
             <p class="font-bold">{{ exp.title }}</p>
             <p class="text-sm text-gray-500">{{ exp.company }} · {{ exp.time }}</p>
             <p class="text-sm mt-1">{{ exp.desc }}</p>
           </div>
-        </section>
+        </Card>
       </div>
 
       <!-- 右：側欄 -->
       <aside class="w-full lg:w-64 flex-shrink-0 space-y-6">
         <!-- Your Dashboard -->
-        <section class="bg-white shadow rounded-lg p-4 md:p-6">
+        <Card as="section" class="p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">Your Dashboard</h2>
           <div class="space-y-4">
             <div>
@@ -122,10 +122,10 @@
               <p class="text-sm text-gray-500">search appearances</p>
             </div>
           </div>
-        </section>
+        </Card>
 
         <!-- Visitors -->
-        <section class="bg-white shadow rounded-lg p-4 md:p-6">
+        <Card as="section" class="p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">Visitors</h2>
           <ul class="space-y-4">
             <li v-for="v in visitors" :key="v.name" class="flex items-center gap-3">
@@ -137,10 +137,10 @@
             </li>
           </ul>
           <button class="mt-4 text-blue-600 text-sm font-medium">View All</button>
-        </section>
+        </Card>
 
         <!-- You May Like These Courses -->
-        <section class="bg-white shadow rounded-lg p-4 md:p-6">
+        <Card as="section" class="p-4 md:p-6">
           <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">You May Like These Courses</h2>
           <ul class="space-y-4">
             <li v-for="c in courses" :key="c.title" class="flex gap-3">
@@ -152,7 +152,7 @@
             </li>
           </ul>
           <button class="mt-4 text-blue-600 text-sm font-medium">See All Recommendations</button>
-        </section>
+        </Card>
       </aside>
     </div>
   </div>
@@ -160,6 +160,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import BaseButton from '../components/common/BaseButton.vue'
+import Card from '../components/common/Card.vue'
 
 const projects = [
   {

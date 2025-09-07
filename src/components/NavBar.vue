@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Search, Menu } from 'lucide-vue-next'
 import NavItem from './NavItem.vue'
 import SearchDropdown from './SearchPanel.vue'
+import Overlay from './common/Overlay.vue'
 
 const emit = defineEmits<{ (e: 'open-other'): void }>()
 
@@ -127,11 +128,7 @@ const filtered = computed(() => {
   </div>
 
   <!-- 背景遮罩 -->
-  <div
-    v-show="openSearch && q.trim().length > 0"
-    class="fixed inset-0 bg-black/30 z-40"
-    @click="openSearch = false"
-  />
+  <Overlay :show="openSearch && q.trim().length > 0" @click="openSearch = false" />
 
   <!-- 下拉搜尋結果：貼齊 navbar 下緣 -->
   <SearchDropdown

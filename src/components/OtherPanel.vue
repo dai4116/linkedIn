@@ -1,11 +1,7 @@
 <template>
   <!-- 半透明遮罩，點擊也會關閉 -->
   <div class="fixed inset-0 z-40">
-    <div
-      class="absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-300"
-      :class="open ? 'opacity-100' : 'opacity-0'"
-      @click="handleClose"
-    ></div>
+    <Overlay :show="open" class="bg-black/40" @click="handleClose" />
 
     <aside
       class="absolute inset-y-0 right-0 z-50 w-80 bg-white flex flex-col transform transition-transform duration-300 will-change-transform"
@@ -149,6 +145,8 @@ import {
 } from 'lucide-vue-next'
 
 import { onMounted, ref, nextTick } from 'vue'
+import Overlay from './common/Overlay.vue'
+import { useEscapeKey } from '../composables/useEscapeKey'
 
 const emit = defineEmits<{
   (e: 'close'): void
@@ -175,4 +173,6 @@ function onPanelTransitionEnd(e: TransitionEvent) {
     emit('close')
   }
 }
+
+useEscapeKey(() => handleClose())
 </script>

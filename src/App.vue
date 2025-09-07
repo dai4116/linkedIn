@@ -9,7 +9,7 @@ const showOther = ref(false)
 </script>
 
 <template>
-  <div>
+  <div class="min-h-screen flex flex-col">
     <NavBar @open-other="showOther = true" />
     <main class="flex-1">
       <router-view />

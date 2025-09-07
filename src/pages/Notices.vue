@@ -17,7 +17,7 @@
           </div>
         </div>
 
-        <div class="bg-white shadow rounded-lg p-6">
+        <Card as="div" class="p-6">
           <h3 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">Your Dashboard</h3>
           <div class="space-y-6">
             <div>
@@ -33,14 +33,14 @@
               <p class="text-sm text-gray-500">search appearances</p>
             </div>
           </div>
-        </div>
+        </Card>
       </aside>
 
       <main class="md:col-span-4 space-y-8">
         <section>
           <h3 class="flex items-center justify-center text-gray-500 uppercase text-xs mb-4">Recent</h3>
           <ul class="space-y-4">
-            <li class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-between">
+            <Card as="li" class="p-4 shadow-sm flex items-center justify-between">
               <div class="flex items-center space-x-4">
                 <img src="https://randomuser.me/api/portraits/women/47.jpg" alt="icon" class="w-8 h-8 rounded-full" />
                 <div>
@@ -51,8 +51,8 @@
                 </div>
               </div>
               <button class="text-gray-400 hover:text-gray-600">⋯</button>
-            </li>
-            <li class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-between">
+            </Card>
+            <Card as="li" class="p-4 shadow-sm flex items-center justify-between">
               <div class="flex items-center space-x-4">
                 <img src="https://randomuser.me/api/portraits/women/47.jpg" alt="avatar" class="w-8 h-8 rounded-full" />
                 <div>
@@ -63,8 +63,8 @@
                 </div>
               </div>
               <button class="text-gray-400 hover:text-gray-600">⋯</button>
-            </li>
-            <li class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-between">
+            </Card>
+            <Card as="li" class="p-4 shadow-sm flex items-center justify-between">
               <div class="flex items-center space-x-4">
                 <img src="https://randomuser.me/api/portraits/women/47.jpg" alt="avatar" class="w-8 h-8 rounded-full" />
                 <div>
@@ -75,14 +75,14 @@
                 </div>
               </div>
               <button class="text-gray-400 hover:text-gray-600">⋯</button>
-            </li>
+            </Card>
           </ul>
         </section>
 
         <section>
           <h3 class="flex items-center justify-center text-gray-500 uppercase text-xs mb-4">Earlier</h3>
           <ul class="space-y-4">
-            <li class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-between">
+            <Card as="li" class="p-4 shadow-sm flex items-center justify-between">
               <div class="flex items-center space-x-4">
                 <img src="https://randomuser.me/api/portraits/women/47.jpg" alt="icon" class="w-8 h-8 rounded-full" />
                 <div>
@@ -93,8 +93,8 @@
                 </div>
               </div>
               <button class="text-gray-400 hover:text-gray-600">⋯</button>
-            </li>
-            <li class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-between">
+            </Card>
+            <Card as="li" class="p-4 shadow-sm flex items-center justify-between">
               <div class="flex items-center space-x-4">
                 <img src="https://randomuser.me/api/portraits/women/47.jpg" alt="avatar" class="w-8 h-8 rounded-full" />
                 <div>
@@ -105,7 +105,7 @@
                 </div>
               </div>
               <button class="text-gray-400 hover:text-gray-600">⋯</button>
-            </li>
+            </Card>
           </ul>
         </section>
       </main>
@@ -114,4 +114,5 @@
 </template>
 
 <script setup lang="ts">
+import Card from '../components/common/Card.vue'
 </script>
