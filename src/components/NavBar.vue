@@ -4,6 +4,9 @@ import { Search, Menu } from 'lucide-vue-next'
 import NavItem from './NavItem.vue'
 import SearchDropdown from './SearchPanel.vue'
 import Overlay from './common/Overlay.vue'
+import LogoMark from './common/LogoMark.vue'
+import { NAV_ITEMS } from '../constants/nav'
+import type { Job, User, Article } from '../types/search'
 
 const emit = defineEmits<{ (e: 'open-other'): void }>()
 
@@ -38,15 +41,15 @@ onBeforeUnmount(() => {
   window.removeEventListener('scroll', measure)
 })
 
-const JOBS = [
+const JOBS: Job[] = [
   { id: 'j1', title: 'UX/UI Designer', company: 'Upwork', logo: 'https://seeklogo.com/images/U/upwork-logo-2D2C1E3B42-seeklogo.com.png', to: '/jobs/uxui-designer' },
   { id: 'j2', title: 'Part-time UX designer', company: 'Google', logo: 'https://www.gstatic.com/images/branding/product/1x/googleg_lodp.png', to: '/jobs/parttime-ux' },
 ]
-const USERS = [
+const USERS: User[] = [
   { id: 'u1', name: 'Brandon Wilson', subtitle: 'Senior UX designer', avatar: 'https://i.pravatar.cc/80?img=15', to: '/u/brandon-wilson' },
   { id: 'u2', name: 'Kyle Fisher', subtitle: 'Product designer at Commander Corp.', avatar: 'https://i.pravatar.cc/80?img=5', to: '/u/kyle-fisher' },
 ]
-const ARTICLES = [
+const ARTICLES: Article[] = [
   { id: 'a1', title: 'A little about usability testing', views: '3,912', thumb: 'https://picsum.photos/seed/ux/160/120', to: '/articles/usability-testing' },
 ]
 
@@ -66,16 +69,12 @@ const filtered = computed(() => {
   <nav ref="navRef" class="flex flex-wrap items-center justify-between bg-white px-4 md:px-6 py-3 shadow gap-3">
     <!-- Logo -->
     <RouterLink to="/" class="flex items-center gap-2">
-      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="logo" class="w-8 h-8" />
+      <LogoMark size="md" />
     </RouterLink>
 
     <!-- Icon Nav -->
     <div class="hidden lg:flex gap-6 text-sm text-gray-700 items-center">
-      <NavItem icon="rss" label="FEED" to="/feed" />
-      <NavItem icon="users" label="NETWORK" to="/network" />
-      <NavItem icon="briefcase" label="JOBS" to="/jobs" />
-      <NavItem icon="message-square" label="CHAT" to="/chat" :badge="1" />
-      <NavItem icon="bell" label="NOTICES" to="/notices" />
+      <NavItem v-for="n in NAV_ITEMS" :key="n.to" :icon="n.icon" :label="n.label" :to="n.to" :badge="n.badge" />
     </div>
 
     <!-- 搜尋 -->
@@ -119,11 +118,7 @@ const filtered = computed(() => {
   <!-- Mobile 功能選單 -->
   <div v-show="showMobileNav" class="lg:hidden bg-white border-t">
     <div class="px-4 py-2 grid grid-cols-5 gap-3">
-      <NavItem icon="rss" label="FEED" to="/feed" />
-      <NavItem icon="users" label="NETWORK" to="/network" />
-      <NavItem icon="briefcase" label="JOBS" to="/jobs" />
-      <NavItem icon="message-square" label="CHAT" to="/chat" :badge="1" />
-      <NavItem icon="bell" label="NOTICES" to="/notices" />
+      <NavItem v-for="n in NAV_ITEMS" :key="n.to" :icon="n.icon" :label="n.label" :to="n.to" :badge="n.badge" />
     </div>
   </div>
 

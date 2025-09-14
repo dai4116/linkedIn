@@ -22,10 +22,6 @@
               <div class="font-medium text-gray-800">{{ chat.name }}</div>
               <div class="text-xs text-gray-500 truncate">{{ chat.lastMessage }}</div>
             </div>
-            <span
-              v-if="chat.unread"
-              class="w-2 h-2 bg-blue-600 rounded-full"
-            ></span>
           </li>
         </ul>
         <BaseButton block>Start new chat</BaseButton>

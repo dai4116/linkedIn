@@ -4,34 +4,16 @@
     <div class="md:hidden">
       <Container class="py-3">
       <div class="flex items-center justify-between">
+        <LogoMark size="sm" :showText="true" />
         <div class="flex items-center gap-2">
-          <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="logo" class="w-6 h-6" />
-          <span class="text-sm font-semibold">LinkedIn</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <select class="border border-gray-300 rounded px-2 py-1 text-xs">
-            <option>English</option>
-            <option>简体中文</option>
-            <option>Español</option>
-            <option>日本語</option>
-          </select>
+          <LanguageSelect size="sm" />
           <button class="p-2 rounded hover:bg-gray-100" @click="mobileOpen = !mobileOpen" aria-label="Toggle footer links">
             <ChevronDownIcon class="w-4 h-4 text-gray-600" :class="{ 'transform rotate-180': mobileOpen }" />
           </button>
         </div>
       </div>
       <div v-show="mobileOpen" class="mt-2 grid grid-cols-2 gap-x-6 gap-y-2 text-xs text-gray-600">
-        <a href="#" class="hover:underline">About</a>
-        <a href="#" class="hover:underline">Careers</a>
-        <a href="#" class="hover:underline">Advertising</a>
-        <a href="#" class="hover:underline">Small Business</a>
-        <a href="#" class="hover:underline">Talent Solutions</a>
-        <a href="#" class="hover:underline">Marketing Solutions</a>
-        <a href="#" class="hover:underline">Sales Solutions</a>
-        <a href="#" class="hover:underline">Safety Center</a>
-        <a href="#" class="hover:underline">Community Guidelines</a>
-        <a href="#" class="hover:underline">Privacy &amp; Terms</a>
-        <a href="#" class="hover:underline">Mobile App</a>
+        <a v-for="l in FOOTER_LINKS" :key="l.label" :href="l.href" class="hover:underline">{{ l.label }}</a>
         <div class="col-span-2 flex gap-2 mt-2">
           <button class="flex-1 flex items-center justify-center px-3 py-1.5 border border-blue-600 text-blue-600 rounded text-xs font-medium">
             <HelpCircleIcon class="w-4 h-4 mr-2" />
@@ -51,30 +33,15 @@
       <Container class="py-6 md:py-8">
         <div class="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8">
         <div class="flex flex-col items-center md:items-start space-y-2">
-        <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="logo" class="w-8 h-8" />
-        <span class="text-sm font-bold">LinkedIn</span>
-      </div>
+          <LogoMark size="md" :showText="true" />
+        </div>
 
       <!-- Navigation -->
       <div class="md:col-span-2">
         <h3 class="text-sm font-semibold text-gray-500 uppercase mb-4">Navigation</h3>
         <div class="grid grid-cols-3 gap-4 text-sm text-gray-600">
-          <div class="space-y-2">
-            <a href="#" class="block hover:underline">About</a>
-            <a href="#" class="block hover:underline">Careers</a>
-            <a href="#" class="block hover:underline">Advertising</a>
-            <a href="#" class="block hover:underline">Small Business</a>
-          </div>
-          <div class="space-y-2">
-            <a href="#" class="block hover:underline">Talent Solutions</a>
-            <a href="#" class="block hover:underline">Marketing Solutions</a>
-            <a href="#" class="block hover:underline">Sales Solutions</a>
-            <a href="#" class="block hover:underline">Safety Center</a>
-          </div>
-          <div class="space-y-2">
-            <a href="#" class="block hover:underline">Community Guidelines</a>
-            <a href="#" class="block hover:underline">Privacy &amp; Terms</a>
-            <a href="#" class="block hover:underline">Mobile App</a>
+          <div v-for="(col, idx) in FOOTER_NAV_COLUMNS" :key="idx" class="space-y-2">
+            <a v-for="l in col" :key="l.label" :href="l.href" class="block hover:underline">{{ l.label }}</a>
           </div>
         </div>
       </div>
@@ -98,12 +65,7 @@
       <!-- Language -->
       <div>
         <h3 class="text-sm font-semibold text-gray-500 uppercase mb-4">Language</h3>
-        <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm">
-          <option>English</option>
-          <option>简体中文</option>
-          <option>Español</option>
-          <option>日本語</option>
-        </select>
+        <LanguageSelect size="md" />
       </div>
         </div>
       </Container>
@@ -115,6 +77,9 @@
 import { HelpCircle as HelpCircleIcon, Settings as SettingsIcon, ChevronDown as ChevronDownIcon } from 'lucide-vue-next'
 import { ref } from 'vue'
 import Container from './common/Container.vue'
+import LogoMark from './common/LogoMark.vue'
+import LanguageSelect from './common/LanguageSelect.vue'
+import { FOOTER_LINKS, FOOTER_NAV_COLUMNS } from '../constants/footer'
 
 const mobileOpen = ref(false)
 </script>

@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* Media list item */
+  .c-media-item {
+    @apply flex items-center justify-between rounded-lg border hover:bg-gray-50;
+  }
+  .c-media-body {
+    @apply flex items-center gap-3 p-3;
+  }
+  .c-media-title {
+    @apply text-sm font-semibold text-gray-800;
+  }
+  .c-media-subtitle {
+    @apply text-xs text-gray-500;
+  }
+
+  /* Badges */
+  .c-badge {
+    @apply inline-flex items-center rounded-full font-semibold;
+  }
+  .c-badge--neutral { @apply bg-gray-200 text-gray-800; }
+  .c-badge--primary { @apply bg-blue-100 text-blue-700; }
+  .c-badge--success { @apply bg-green-100 text-green-700; }
+  .c-badge--warning { @apply bg-orange-500 text-white; }
+  .c-badge--danger  { @apply bg-red-100 text-red-700; }
+}

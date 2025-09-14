@@ -15,21 +15,15 @@
       <section>
         <h3 class="text-[11px] tracking-wide text-gray-400 font-semibold">JOBS</h3>
         <div class="mt-2 space-y-2">
-          <RouterLink
+          <MediaListItem
             v-for="job in jobs"
             :key="job.id"
             :to="job.to"
-            class="flex items-center justify-between rounded-lg border hover:bg-gray-50"
-          >
-            <div class="flex items-center gap-3 p-3">
-              <img :src="job.logo" alt="" class="w-7 h-7 rounded" />
-              <div class="leading-tight">
-                <div class="text-sm font-semibold text-gray-800">{{ job.title }}</div>
-                <div class="text-xs text-gray-500">{{ job.company }}</div>
-              </div>
-            </div>
-            <div class="pr-3 text-gray-300">›</div>
-          </RouterLink>
+            :img-src="job.logo"
+            img-class="w-7 h-7 rounded"
+            :title="job.title"
+            :subtitle="job.company"
+          />
         </div>
         <RouterLink :to="`/search/jobs?q=${encodeURIComponent(query)}`" class="block mt-2 text-xs text-blue-600 font-semibold">
           ALL JOBS ({{ jobsCount }})
@@ -40,21 +34,15 @@
       <section>
         <h3 class="text-[11px] tracking-wide text-gray-400 font-semibold">USERS</h3>
         <div class="mt-2 space-y-2">
-          <RouterLink
+          <MediaListItem
             v-for="u in users"
             :key="u.id"
             :to="u.to"
-            class="flex items-center justify-between rounded-lg border hover:bg-gray-50"
-          >
-            <div class="flex items-center gap-3 p-3">
-              <img :src="u.avatar" alt="" class="w-9 h-9 rounded-full" />
-              <div class="leading-tight">
-                <div class="text-sm font-semibold text-gray-800">{{ u.name }}</div>
-                <div class="text-xs text-gray-500">{{ u.subtitle }}</div>
-              </div>
-            </div>
-            <div class="pr-3 text-gray-300">›</div>
-          </RouterLink>
+            :img-src="u.avatar"
+            img-class="w-9 h-9 rounded-full"
+            :title="u.name"
+            :subtitle="u.subtitle"
+          />
         </div>
         <RouterLink :to="`/search/users?q=${encodeURIComponent(query)}`" class="block mt-2 text-xs text-blue-600 font-semibold">
           ALL USERS ({{ usersCount }})
@@ -65,21 +53,15 @@
       <section>
         <h3 class="text-[11px] tracking-wide text-gray-400 font-semibold">ARTICLES</h3>
         <div class="mt-2">
-          <RouterLink
+          <MediaListItem
             v-for="a in articles"
             :key="a.id"
             :to="a.to"
-            class="flex items-center justify-between rounded-lg border hover:bg-gray-50"
-          >
-            <div class="flex items-center gap-3 p-3">
-              <img :src="a.thumb" alt="" class="w-16 h-12 rounded object-cover" />
-              <div class="leading-tight">
-                <div class="text-sm font-semibold text-gray-800">{{ a.title }}</div>
-                <div class="text-xs text-gray-500">{{ a.views }} viewers</div>
-              </div>
-            </div>
-            <div class="pr-3 text-gray-300">›</div>
-          </RouterLink>
+            :img-src="a.thumb"
+            img-class="w-16 h-12 rounded object-cover"
+            :title="a.title"
+            :subtitle="`${a.views} viewers`"
+          />
         </div>
         <RouterLink :to="`/search/articles?q=${encodeURIComponent(query)}`" class="block mt-2 text-xs text-blue-600 font-semibold">
           ALL ARTICLES ({{ articlesCount }})
@@ -104,10 +86,8 @@ import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
 import { useEscapeKey } from '../composables/useEscapeKey'
 import { useClickOutside } from '../composables/useClickOutside'
-
-type Job = { id: string; title: string; company: string; logo: string; to: string }
-type User = { id: string; name: string; subtitle: string; avatar: string; to: string }
-type Article = { id: string; title: string; views: string; thumb: string; to: string }
+import type { Job, User, Article } from '../types/search'
+import MediaListItem from './common/MediaListItem.vue'
 
 const props = defineProps<{
   open: boolean
