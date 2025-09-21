@@ -123,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted } from 'vue'
 import BaseButton from '../components/common/BaseButton.vue'
 import Card from '../components/common/Card.vue'
 import {
@@ -132,96 +132,11 @@ import {
   BellIcon,
   BellSlashIcon
 } from '@heroicons/vue/24/outline'
+import { useJobsData } from '../composables/useJobsData'
 
-interface Job {
-  id: number
-  logo: string
-  title: string
-  company: string
-  location: string
-  description: string
-}
-interface Search {
-  id: number
-  title: string
-  count?: number
-  location: string
-  alertOn: boolean
-}
-interface Article {
-  id: number
-  title: string
-  image: string
-  views: number
-}
+const { jobsForYou, newJobs, mySearches, articles, trackedJobs, load } = useJobsData()
 
-const jobsForYou = ref<Job[]>([
-  {
-    id: 1,
-    logo: 'https://picsum.photos/seed/upwork/40',
-    title: 'UX/UI designer',
-    company: 'Upwork',
-    location: 'Remote only',
-    description: "On Upwork you'll find a range of top freelancers and agencies..."
-  },
-  {
-    id: 2,
-    logo: 'https://picsum.photos/seed/facebook/40',
-    title: 'Product designer',
-    company: 'Facebook',
-    location: 'CA, USA',
-    description: "Founded in 2004, Facebook's mission is to give people the power..."
-  },
-  {
-    id: 3,
-    logo: 'https://picsum.photos/seed/google/40',
-    title: 'Part-time UX designer',
-    company: 'Google',
-    location: 'International',
-    description: "Search the world's information, including webpages, images..."
-  },
-  {
-    id: 4,
-    logo: 'https://picsum.photos/seed/linkedin/40',
-    title: 'Web designer',
-    company: 'LinkedIn',
-    location: 'CA, USA',
-    description: "LinkedIn, the world's largest professional network..."
-  }
-])
-
-const newJobs = ref<Job[]>([
-  {
-    id: 1,
-    logo: 'https://picsum.photos/seed/instagram/40',
-    title: 'UI designer',
-    company: 'Instagram',
-    location: 'CA, USA',
-    description: "Instagram is a photo and video-sharing social networking..."
-  },
-  {
-    id: 2,
-    logo: 'https://picsum.photos/seed/periscope/40',
-    title: 'Product designer',
-    company: 'Periscope',
-    location: 'Remote only',
-    description: "Periscope is a live video streaming app for Android and iOS..."
-  }
-])
-
-const mySearches = ref<Search[]>([
-  { id: 1, title: 'UX/UI designer', count: 240, location: 'Remote', alertOn: false },
-  { id: 2, title: 'Web designer', location: 'Los-Angeles, CA', alertOn: true },
-  { id: 3, title: 'Graphic designer', location: 'Malaysia, Kuala Lumpur', alertOn: true }
-])
-
-const trackedJobs = ref<Job[]>(jobsForYou.value.slice(0, 2))
-
-const articles = ref<Article[]>([
-  { id: 1, title: 'The guide. Apply for a job', image: 'https://picsum.photos/seed/a/48', views: 12932 },
-  { id: 2, title: 'Your dream job and how you can get it', image: 'https://picsum.photos/seed/b/48', views: 9112 },
-  { id: 3, title: 'Now you know it. 15 steps to find job', image: 'https://picsum.photos/seed/c/48', views: 7221 }
-])
+onMounted(() => { void load() })
 </script>
 
 <style scoped>

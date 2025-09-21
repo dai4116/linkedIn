@@ -115,9 +115,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import Card from '../components/common/Card.vue'
 import BaseButton from '../components/common/BaseButton.vue'
+import { useFeedData } from '../composables/useFeedData'
 
 interface Author {
   id: number
@@ -146,22 +147,9 @@ const newPostText = ref('')
 
 const sortBy = ref<'trending' | 'recent'>('recent')
 
-const posts = ref<Post[]>([
-  {
-    id: 1,
-    author: {
-      id: 2,
-      name: 'Theresa Steward',
-      title: 'iOS developer',
-      avatar: 'https://randomuser.me/api/portraits/women/52.jpg'
-    },
-    time: '2h ago',
-    content:
-      'What did the Dursleys care if Harry lost his place on the House Quidditch team because he hadn’t practiced all summer? …',
-    likes: 42,
-    comments: 9
-  }
-])
+const { posts, load } = useFeedData()
+
+onMounted(() => { void load() })
 
 // 計算排序後的貼文
 const sortedPosts = computed(() => {
