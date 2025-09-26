@@ -1,4 +1,4 @@
-export type Job = {
+export type SearchJob = {
   id: string
   title: string
   company: string
@@ -14,7 +14,7 @@ export type User = {
   to: string
 }
 
-export type Article = {
+export type SearchArticle = {
   id: string
   title: string
   views: string

@@ -6,7 +6,7 @@ import SearchDropdown from './SearchPanel.vue'
 import Overlay from './common/Overlay.vue'
 import LogoMark from './common/LogoMark.vue'
 import { NAV_ITEMS } from '../constants/nav'
-import type { Job, User, Article } from '../types/search'
+import type { SearchJob, User, SearchArticle } from '../types/search'
 
 const emit = defineEmits<{ (e: 'open-other'): void }>()
 
@@ -41,7 +41,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('scroll', measure)
 })
 
-const JOBS: Job[] = [
+const JOBS: SearchJob[] = [
   { id: 'j1', title: 'UX/UI Designer', company: 'Upwork', logo: 'https://seeklogo.com/images/U/upwork-logo-2D2C1E3B42-seeklogo.com.png', to: '/jobs/uxui-designer' },
   { id: 'j2', title: 'Part-time UX designer', company: 'Google', logo: 'https://www.gstatic.com/images/branding/product/1x/googleg_lodp.png', to: '/jobs/parttime-ux' },
 ]
@@ -49,7 +49,7 @@ const USERS: User[] = [
   { id: 'u1', name: 'Brandon Wilson', subtitle: 'Senior UX designer', avatar: 'https://i.pravatar.cc/80?img=15', to: '/u/brandon-wilson' },
   { id: 'u2', name: 'Kyle Fisher', subtitle: 'Product designer at Commander Corp.', avatar: 'https://i.pravatar.cc/80?img=5', to: '/u/kyle-fisher' },
 ]
-const ARTICLES: Article[] = [
+const ARTICLES: SearchArticle[] = [
   { id: 'a1', title: 'A little about usability testing', views: '3,912', thumb: 'https://picsum.photos/seed/ux/160/120', to: '/articles/usability-testing' },
 ]
 

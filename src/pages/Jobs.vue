@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-100">
+  <div v-if="isLoggedIn" class="min-h-screen bg-gray-100">
     <div class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
       <main class="lg:col-span-2 space-y-6">
         <Card as="div" class="p-4 flex flex-col lg:flex-row items-stretch lg:items-center gap-3 lg:gap-4">
@@ -18,7 +18,7 @@
           <div class="flex items-center justify-center text-gray-500 uppercase text-xs mb-4">JOBS FOR YOU</div>
           <div class="space-y-4">
             <Card
-              v-for="job in jobsForYou"
+              v-for="job in tracked"
               :key="job.id"
               as="div"
               class="p-4 grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-8 items-center gap-4"
@@ -123,9 +123,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import BaseButton from '../components/common/BaseButton.vue'
 import Card from '../components/common/Card.vue'
+import { useUserStore } from '../stores/user';
 import {
   MagnifyingGlassIcon,
   Bars3Icon,
@@ -133,10 +134,20 @@ import {
   BellSlashIcon
 } from '@heroicons/vue/24/outline'
 import { useJobsData } from '../composables/useJobsData'
+import router from '../router';
 
-const { jobsForYou, newJobs, mySearches, articles, trackedJobs, load } = useJobsData()
+const { tracked, newJobs, mySearches, articles, trackedJobs, load } = useJobsData()
 
-onMounted(() => { void load() })
+const {isLoggedIn} = useUserStore()
+console.log(isLoggedIn)
+
+
+onMounted(() => { 
+  load()
+  if(!isLoggedIn) {
+    router.push('/login');
+}
+ })
 </script>
 
 <style scoped>

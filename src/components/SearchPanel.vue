@@ -86,7 +86,7 @@ import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
 import { useEscapeKey } from '../composables/useEscapeKey'
 import { useClickOutside } from '../composables/useClickOutside'
-import type { Job, User, Article } from '../types/search'
+import type { SearchJob, User, SearchArticle } from '../types/search'
 import MediaListItem from './common/MediaListItem.vue'
 
 const props = defineProps<{
@@ -95,9 +95,9 @@ const props = defineProps<{
   left: number
   width: number
   query: string
-  jobs: Job[]
+  jobs: SearchJob[]
   users: User[]
-  articles: Article[]
+  articles: SearchArticle[]
   jobsCount: number
   usersCount: number
   articlesCount: number

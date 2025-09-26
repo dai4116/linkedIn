@@ -1,51 +1,35 @@
-import { ref, computed } from 'vue'
-import { fetchJobsForYou, fetchNewJobs, fetchMySearches, fetchJobArticles } from '../services/fakeApi'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { fetchJobArticles, fetchMySearches, fetchNewJob, fetchTrackedArr } from '../services/fakeApi'
+import type { Article, Job, Search } from '../types/types'
 
-type Job = {
-  id: number
-  logo: string
-  title: string
-  company: string
-  location: string
-  description: string
-}
 
-type Search = {
-  id: number
-  title: string
-  count?: number
-  location: string
-  alertOn: boolean
-}
-
-type Article = {
-  id: number
-  title: string
-  image: string
-  views: number
-}
 
 export function useJobsData() {
-  const jobsForYou = ref<Job[]>([])
+  const tracked = ref<Job[]>([])
   const newJobs = ref<Job[]>([])
   const mySearches = ref<Search[]>([])
   const articles = ref<Article[]>([])
 
-  const trackedJobs = computed(() => jobsForYou.value.slice(0, 2))
+  const trackedJobs = computed(() => tracked.value.slice(0, 2))
+  const route = useRoute()
+  const jobId = Number(route.params.jobId)
+  const userId = Number(route.params.userId)
 
   async function load() {
+
     const [jf, nj, ms, arts] = await Promise.all([
-      fetchJobsForYou(),
-      fetchNewJobs(),
+      fetchTrackedArr(jobId,userId),
+      fetchNewJob(jobId,userId),
       fetchMySearches(),
       fetchJobArticles(),
     ])
-    jobsForYou.value = jf
+    tracked.value = jf
     newJobs.value = nj
     mySearches.value = ms
     articles.value = arts
   }
 
-  return { jobsForYou, newJobs, mySearches, articles, trackedJobs, load }
+  return { tracked: tracked, newJobs, mySearches, articles, trackedJobs, load }
 }
 
