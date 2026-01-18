@@ -1,6 +1,6 @@
 // Simple mock APIs to simulate async server calls
 
-import type { Article, Job, Post, Search, User } from "../types/types"
+import { Token, User, type Article, type Job, type Post, type Search } from "../types/types"
 
 
 const trackedArr: Job[] = [
@@ -115,22 +115,46 @@ export async function fetchFeedPosts(): Promise<Post[]> {
 }
 
 
-export const UserList: User[] = [
+export const userList: User[] = [
   {
     id: 1,
+    account: 'apple01',
     name: 'apple',
     title: 'apple title',
-    avatar: 'apple avatar'
+    avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
   },
   {
     id: 2,
+    account: 'banana02',
     name: 'banana',
     title: 'banana title',
-    avatar: 'banana avatar'
+    avatar: 'https://randomuser.me/api/portraits/women/44.jpg'
   },
 ]
 
-export async function getUserId(userId: number):Promise<User | undefined> {
+export async function getUserAccount(account: string):Promise<User | undefined> {
   await delay(350)
-  return UserList.find(item => item.id === userId)
+  return userList.find(item => item.account === account)
+}
+
+export const tokenList: Token[] = [
+  {
+    userId: 1,
+    token: 'abc123',
+    time: 10,
+  },
+]
+
+export function getToken(tokenStr: string): Token | undefined {
+  return tokenList.find(item => item.token === tokenStr)
+}
+
+export async function auth(account: string) {
+  let user = await getUserAccount(account)
+  if(user) {
+    let token = tokenList.find(item => item.userId === user.id)
+    return {user,token}
+  }
+  return {user:undefined,token:undefined}
+
 }

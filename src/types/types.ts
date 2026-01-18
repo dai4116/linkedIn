@@ -25,6 +25,7 @@ export class Article  {
 
 export class User {
   public id: number = 0
+  public account: string = ''
   public name: string = ''
   public title: string = ''
   public avatar: string = ''
@@ -40,3 +41,9 @@ export class Post  {
   public comments: number = 0
 }
 
+
+export class Token {
+  public userId: number = 0
+  public token: string = ''
+  public time: number = 0
+}

@@ -7,10 +7,10 @@
       <div class="flex-1 space-y-6">
         <!-- Header -->
         <Card as="div" class="p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-6">
-          <img class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover" src="https://i.pravatar.cc/150?img=32" alt="avatar" />
+          <img class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover" :src="profile.avatar" :alt="profile.name" />
           <div class="flex-1">
-            <h1 class="text-2xl font-bold">Dmitry Kargaev</h1>
-            <p class="text-gray-500">Freelance UX/UI Designer · 80+ projects</p>
+            <h1 class="text-2xl font-bold">{{ profile.name }}</h1>
+            <p class="text-gray-500">{{ profile.title }}</p>
             <p class="text-sm text-gray-400">Saint Petersburg, Russia</p>
             <div class="mt-2 flex flex-col sm:flex-row gap-2">
               <BaseButton size="sm">Contact Info</BaseButton>
@@ -159,9 +159,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import BaseButton from '../components/common/BaseButton.vue'
 import Card from '../components/common/Card.vue'
+import { useUserStore } from '../stores/user'
+import { userList } from '../services/fakeApi'
+
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+const profile = computed(() => {
+  if (user.value) {
+    return user.value
+  }
+  const storedId = localStorage.getItem('userId')
+  if (storedId) {
+    const id = Number(storedId)
+    const found = userList.find(item => item.id === id)
+    if (found) {
+      return found
+    }
+  }
+  return userList[0]
+})
 
 const projects = [
   {

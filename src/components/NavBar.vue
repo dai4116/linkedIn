@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { Search, Menu } from 'lucide-vue-next'
 import NavItem from './NavItem.vue'
 import SearchDropdown from './SearchPanel.vue'
@@ -7,6 +9,8 @@ import Overlay from './common/Overlay.vue'
 import LogoMark from './common/LogoMark.vue'
 import { NAV_ITEMS } from '../constants/nav'
 import type { SearchJob, User, SearchArticle } from '../types/search'
+import { useUserStore } from '../stores/user'
+import { userList } from '../services/fakeApi'
 
 const emit = defineEmits<{ (e: 'open-other'): void }>()
 
@@ -18,6 +22,30 @@ const dropdownLeft = ref(0)
 const dropdownWidth = ref(256) // 與 w-64 對應的預設寬度
 const searchRef = ref<HTMLElement | null>(null)
 const showMobileNav = ref(false)
+const router = useRouter()
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+const currentUser = computed(() => {
+  if (user.value) {
+    return user.value
+  }
+  const storedId = localStorage.getItem('userId')
+  if (storedId) {
+    const id = Number(storedId)
+    const found = userList.find(item => item.id === id)
+    if (found) {
+      return found
+    }
+  }
+  return undefined
+})
+
+const handleLogout = () => {
+  user.value = undefined
+  localStorage.removeItem('userId')
+  localStorage.removeItem('token')
+  router.push('/login')
+}
 
 // 量測 navbar 底緣與搜尋框位置/寬度
 const measure = () => {
@@ -91,16 +119,23 @@ const filtered = computed(() => {
 
     <!-- 頭像 + 數據 + more -->
     <div class="flex items-center gap-4 md:gap-6">
-      <div class="flex items-center gap-2">
-        <img src="https://i.pravatar.cc/40?img=32" class="w-9 h-9 rounded-full" />
+      <div v-if="currentUser" class="flex items-center gap-2">
+        <img :src="currentUser.avatar" class="w-9 h-9 rounded-full" />
         <div class="hidden md:block text-xs text-gray-600 leading-snug">
-          <div class="font-semibold">D. KARGAEV <span class="text-gray-400">YOU</span></div>
+          <div class="font-semibold">{{ currentUser.account }}</div>
           <div>
             <span class="text-gray-400">367 views today </span>
             <span class="text-green-500 font-semibold">+32 ↗</span>
           </div>
         </div>
-  </div>
+      </div>
+      <button
+        v-if="currentUser"
+        class="text-xs text-gray-700 font-semibold bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded"
+        @click="handleLogout"
+      >
+        登出
+      </button>
       <button class="hidden md:block text-xs text-gray-500 font-semibold hover:text-gray-700" @click="emit('open-other')">
         OTHER
       </button>
