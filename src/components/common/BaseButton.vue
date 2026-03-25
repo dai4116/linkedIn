@@ -1,5 +1,5 @@
 <template>
-  <button :type="type" :class="classes" @click="$emit('click', $event)">
+  <button :type="type" :class="classes" :disabled="disabled" @click="$emit('click', $event)">
     <slot />
   </button>
 </template>
@@ -12,17 +12,22 @@ const props = withDefaults(defineProps<{
   size?: 'sm' | 'md'
   block?: boolean
   type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
   class?: any
 }>(), {
   variant: 'primary',
   size: 'md',
   block: false,
   type: 'button',
+  disabled: false,
 })
 
 defineEmits<{ (e: 'click', ev: MouseEvent): void }>()
 
 const variantClass = computed(() => {
+  if (props.disabled) {
+    return 'bg-gray-300 text-gray-500 cursor-not-allowed'
+  }
   switch (props.variant) {
     case 'outline':
       return 'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
@@ -36,11 +41,11 @@ const variantClass = computed(() => {
 const sizeClass = computed(() => props.size === 'sm' ? 'px-3 py-1.5 text-sm' : 'px-4 py-2 text-sm')
 
 const classes = computed(() => [
-  'rounded font-medium inline-flex items-center justify-center',
+  'rounded font-medium inline-flex items-center justify-center transition-colors',
   props.block ? 'w-full' : '',
   sizeClass.value,
   variantClass.value,
-  props.variant !== 'ghost' ? 'focus:outline-none focus:ring-2 focus:ring-blue-500/50' : '',
+  !props.disabled && props.variant !== 'ghost' ? 'focus:outline-none focus:ring-2 focus:ring-blue-500/50' : '',
   props.class,
 ])
 </script>

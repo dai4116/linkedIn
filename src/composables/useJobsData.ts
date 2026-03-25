@@ -10,6 +10,9 @@ export function useJobsData() {
   const newJobs = ref<Job[]>([])
   const mySearches = ref<Search[]>([])
   const articles = ref<Article[]>([])
+  
+  const loading = ref(false)
+  const error = ref<string | null>(null)
 
   const trackedJobs = computed(() => tracked.value.slice(0, 2))
   const route = useRoute()
@@ -17,19 +20,38 @@ export function useJobsData() {
   const userId = Number(route.params.userId)
 
   async function load() {
-
-    const [jf, nj, ms, arts] = await Promise.all([
-      fetchTrackedArr(jobId,userId),
-      fetchNewJob(jobId,userId),
-      fetchMySearches(),
-      fetchJobArticles(),
-    ])
-    tracked.value = jf
-    newJobs.value = nj
-    mySearches.value = ms
-    articles.value = arts
+    loading.value = true
+    error.value = null
+    try {
+      const [jf, nj, ms, arts] = await Promise.all([
+        fetchTrackedArr(jobId,userId),
+        fetchNewJob(jobId,userId),
+        fetchMySearches(),
+        fetchJobArticles(),
+      ])
+      tracked.value = jf
+      // Handle the case where fetchNewJob might return a single Job or undefined
+      // Based on the code in Jobs.vue, it's treated as an array
+      newJobs.value = Array.isArray(nj) ? nj : (nj ? [nj] : [])
+      mySearches.value = ms
+      articles.value = arts
+    } catch (e) {
+      error.value = 'Failed to load jobs data.'
+      console.error(e)
+    } finally {
+      loading.value = false
+    }
   }
 
-  return { tracked: tracked, newJobs, mySearches, articles, trackedJobs, load }
+  return { 
+    tracked, 
+    newJobs, 
+    mySearches, 
+    articles, 
+    trackedJobs, 
+    loading, 
+    error, 
+    load 
+  }
 }
 

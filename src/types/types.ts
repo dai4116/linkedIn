@@ -39,6 +39,7 @@ export class Post  {
   public image?: string= ''
   public likes: number = 0
   public comments: number = 0
+  public liked: boolean = false
 }
 
 

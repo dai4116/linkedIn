@@ -1,22 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Chat from '../pages/Chat.vue'
-import Feed from '../pages/Feed.vue'
-import Jobs from '../pages/Jobs.vue'
-import JobsDetail from '../pages/JobsDetail.vue'
-import Login from '../pages/Login.vue'
-import Network from '../pages/Network.vue'
-import Notices from '../pages/Notices.vue'
-import ProfilePage from '../pages/ProfilePage.vue'
 
 const routes = [
-  { path: '/', component: ProfilePage },
-  { path: '/feed', component: Feed },
-  { path: '/network', component: Network },
-  { path: '/jobs', component: Jobs },
-  { path: '/chat', component: Chat },
-  { path: '/notices', component: Notices },
-  { path: '/jobsDetail/:jobId', component: JobsDetail },
-  { path: '/login', component: Login },
+  { path: '/', component: () => import('../pages/ProfilePage.vue') },
+  { path: '/feed', component: () => import('../pages/Feed.vue') },
+  { path: '/network', component: () => import('../pages/Network.vue') },
+  { path: '/jobs', component: () => import('../pages/Jobs.vue') },
+  { path: '/chat', component: () => import('../pages/Chat.vue') },
+  { path: '/notices', component: () => import('../pages/Notices.vue') },
+  { path: '/jobsDetail/:jobId', component: () => import('../pages/JobsDetail.vue') },
+  { path: '/login', component: () => import('../pages/Login.vue') },
 ]
 
 const router = createRouter({

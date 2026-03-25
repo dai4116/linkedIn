@@ -94,24 +94,48 @@ export async function fetchJobArticles(): Promise<Article[]> {
   ]
 }
 
+export const postsArr: Post[] = [
+  {
+    id: 1,
+    author: {
+      id: 2,
+      account: 'banana02',
+      name: 'Theresa Steward',
+      title: 'iOS developer',
+      avatar: 'https://randomuser.me/api/portraits/women/52.jpg',
+    },
+    time: '2h ago',
+    content:
+      "What did the Dursleys care if Harry lost his place on the House Quidditch team because he hadn’t practiced all summer? …",
+    likes: 42,
+    comments: 9,
+    liked: false,
+  },
+]
+
 export async function fetchFeedPosts(): Promise<Post[]> {
   await delay(350)
-  return [
-    {
-      id: 1,
-      author: {
-        id: 2,
-        name: 'Theresa Steward',
-        title: 'iOS developer',
-        avatar: 'https://randomuser.me/api/portraits/women/52.jpg',
-      },
-      time: '2h ago',
-      content:
-        "What did the Dursleys care if Harry lost his place on the House Quidditch team because he hadn’t practiced all summer? …",
-      likes: 42,
-      comments: 9,
-    },
-  ]
+  return [...postsArr]
+}
+
+export async function createPost(post: Post): Promise<Post> {
+  await delay(500)
+  postsArr.unshift(post)
+  return post
+}
+
+export async function togglePostLike(postId: number): Promise<void> {
+  await delay(200)
+  const post = postsArr.find(p => p.id === postId)
+  if (post) {
+    if (post.liked) {
+      post.likes--
+      post.liked = false
+    } else {
+      post.likes++
+      post.liked = true
+    }
+  }
 }
 
 
@@ -135,6 +159,11 @@ export const userList: User[] = [
 export async function getUserAccount(account: string):Promise<User | undefined> {
   await delay(350)
   return userList.find(item => item.account === account)
+}
+
+export async function getUserById(id: number): Promise<User | undefined> {
+  await delay(200)
+  return userList.find(item => item.id === id)
 }
 
 export const tokenList: Token[] = [
