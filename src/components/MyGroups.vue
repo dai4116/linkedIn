@@ -1,22 +1,42 @@
 <script setup lang="ts">
+import { ref, onMounted, computed } from 'vue'
 import Card from './common/Card.vue'
+import { fetchGroups } from '../services/fakeApi'
+import type { Group } from '../types/types'
 
-const groups = [
-  { name: 'Moscow State Linguistical University', avatar: 'https://randomuser.me/api/portraits/women/47.jpg' },
-  { name: 'Digital freelancers group', avatar: 'https://randomuser.me/api/portraits/women/48.jpg' },
-  { name: 'Interaction design association', avatar: 'https://randomuser.me/api/portraits/women/49.jpg' },
-]
+const allGroups = ref<Group[]>([])
+const isExpanded = ref(false)
+
+onMounted(async () => {
+  allGroups.value = await fetchGroups()
+})
+
+const displayedGroups = computed(() => {
+  return isExpanded.value ? allGroups.value : allGroups.value.slice(0, 3)
+})
+
+const toggleShowAll = () => {
+  isExpanded.value = !isExpanded.value
+}
 </script>
 
 <template>
   <Card>
-    <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">My Groups</h2>
+    <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
+      <h2 class="font-semibold text-lg">My Groups</h2>
+    </div>
     <ul class="space-y-2 text-sm">
-      <li v-for="group in groups" :key="group.name" class="flex items-center space-x-2">
+      <li v-for="group in displayedGroups" :key="group.name" class="flex items-center space-x-2 transition-all duration-300">
         <img :src="group.avatar" alt="" class="w-8 h-8 rounded-full object-cover" />
-        <span>{{ group.name }}</span>
+        <span class="truncate">{{ group.name }}</span>
       </li>
     </ul>
-    <button class="text-blue-600 mt-2 text-xs">Show All (8)</button>
+    <button
+      v-if="allGroups.length > 3"
+      @click="toggleShowAll"
+      class="text-blue-600 mt-4 text-xs font-semibold hover:underline decoration-2"
+    >
+      {{ isExpanded ? 'Show Less' : `Show All (${allGroups.length})` }}
+    </button>
   </Card>
 </template>

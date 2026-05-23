@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { Search, Menu } from 'lucide-vue-next'
@@ -10,11 +10,13 @@ import LogoMark from './common/LogoMark.vue'
 import { NAV_ITEMS } from '../constants/nav'
 import type { SearchJob, User, SearchArticle } from '../types/search'
 import { useUserStore } from '../stores/user'
+import { useSearchStore } from '../stores/search'
 import { userList } from '../services/fakeApi'
 
 const emit = defineEmits<{ (e: 'open-other'): void }>()
 
-const q = ref('')
+const searchStore = useSearchStore()
+const { searchQuery: q } = storeToRefs(searchStore)
 const openSearch = ref(false)
 const navRef = ref<HTMLElement | null>(null)
 const dropdownTop = ref(80)

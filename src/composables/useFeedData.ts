@@ -1,22 +1,44 @@
 import { ref } from 'vue'
-import { fetchFeedPosts, createPost, togglePostLike as apiToggleLike } from '../services/fakeApi'
-import type { Post } from '../types/types'
+import { fetchFeedPosts, fetchMorePosts, createPost, togglePostLike as apiToggleLike } from '../services/fakeApi'
+import type { Post, Comment } from '../types/types'
 
 export function useFeedData() {
   const posts = ref<Post[]>([])
   const loading = ref(false)
+  const loadingMore = ref(false)
   const error = ref<string | null>(null)
+  const hasMore = ref(true)
 
   async function load() {
     loading.value = true
     error.value = null
     try {
-      posts.value = await fetchFeedPosts()
+      const data = await fetchFeedPosts()
+      posts.value = data
+      hasMore.value = data.length > 0
     } catch (e) {
       error.value = 'Failed to load posts. Please try again later.'
       console.error(e)
     } finally {
       loading.value = false
+    }
+  }
+
+  async function loadMore() {
+    if (loadingMore.value || !hasMore.value) return
+    loadingMore.value = true
+    try {
+      const morePosts = await fetchMorePosts()
+      posts.value = [...posts.value, ...morePosts]
+      
+      // Stop after total 15 posts to simulate end of feed
+      if (posts.value.length > 15) {
+        hasMore.value = false
+      }
+    } catch (e) {
+      console.error('Failed to load more posts', e)
+    } finally {
+      loadingMore.value = false
     }
   }
 
@@ -62,6 +84,15 @@ export function useFeedData() {
     }
   }
 
-  return { posts, loading, error, load, addPost, toggleLike }
+  async function addComment(postId: number, comment: Comment) {
+    const post = posts.value.find(p => p.id === postId)
+    if (post) {
+      if (!post.commentList) post.commentList = []
+      post.commentList.push(comment)
+      post.comments = post.commentList.length
+    }
+  }
+
+  return { posts, loading, loadingMore, error, hasMore, load, loadMore, addPost, toggleLike, addComment }
 }
 

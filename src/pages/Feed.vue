@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
+import { storeToRefs } from 'pinia'
 import Card from '../components/common/Card.vue'
 import BaseButton from '../components/common/BaseButton.vue'
 import SidebarProfile from '../components/SidebarProfile.vue'
@@ -7,25 +8,50 @@ import MyGroups from '../components/MyGroups.vue'
 import Hashtags from '../components/Hashtags.vue'
 import { useFeedData } from '../composables/useFeedData'
 import { useUserStore } from '../stores/user'
-import type { Post } from '../types/types'
+import { useSearchStore } from '../stores/search'
+import { fetchJobArticles } from '../services/fakeApi'
+import type { Post, Article, Comment } from '../types/types'
 
 const userStore = useUserStore()
-const currentUser = computed(() => userStore.user)
+const { user: currentUser } = storeToRefs(userStore)
+
+const searchStore = useSearchStore()
+const { searchQuery } = storeToRefs(searchStore)
 
 const newPostText = ref('')
 const sortBy = ref<'trending' | 'recent'>('recent')
+const isPostSuccess = ref(false)
+const trendingArticles = ref<Article[]>([])
 
-const { posts, loading, error, load, addPost, toggleLike } = useFeedData()
+// 留言狀態管理
+const openComments = reactive<Record<number, boolean>>({})
+const commentTexts = reactive<Record<number, string>>({})
 
-onMounted(() => { void load() })
+const { posts, loading, loadingMore, error, hasMore, load, loadMore, addPost, toggleLike, addComment } = useFeedData()
 
-// 計算排序後的貼文
-const sortedPosts = computed(() => {
-  const postsCopy = [...posts.value]
-  if (sortBy.value === 'recent') {
-    return postsCopy.sort((a, b) => b.id - a.id)
+onMounted(async () => {
+  void load()
+  trendingArticles.value = await fetchJobArticles()
+})
+
+// 計算過濾與排序後的貼文
+const filteredAndSortedPosts = computed(() => {
+  let result = [...posts.value]
+  
+  // 搜尋過濾
+  const kw = searchQuery.value.trim().toLowerCase()
+  if (kw) {
+    result = result.filter(p => 
+      p.content.toLowerCase().includes(kw) || 
+      p.author.name.toLowerCase().includes(kw)
+    )
   }
-  return postsCopy.sort((a, b) => b.likes - a.likes)
+
+  // 排序
+  if (sortBy.value === 'recent') {
+    return result.sort((a, b) => b.id - a.id)
+  }
+  return result.sort((a, b) => b.likes - a.likes)
 })
 
 async function submitPost() {
@@ -39,11 +65,55 @@ async function submitPost() {
     content: txt,
     likes: 0,
     comments: 0,
-    liked: false
+    liked: false,
+    commentList: []
   }
 
+  // 1. 執行加入貼文
   await addPost(newPost)
   newPostText.value = ''
+
+  // 2. 顯示按鈕成功狀態
+  isPostSuccess.value = true
+  
+  // 3. 2秒後恢復原狀
+  setTimeout(() => {
+    isPostSuccess.value = false
+  }, 2000)
+}
+
+const toggleCommentSection = (postId: number) => {
+  openComments[postId] = !openComments[postId]
+}
+
+const submitComment = (postId: number) => {
+  const txt = commentTexts[postId]?.trim()
+  if (!txt || !currentUser.value) return
+
+  const newComment: Comment = {
+    id: Date.now(),
+    author: currentUser.value,
+    time: 'Just now',
+    content: txt
+  }
+
+  addComment(postId, newComment)
+  commentTexts[postId] = ''
+}
+
+const handleShare = (post: Post) => {
+  const shareText = `Check out this post by ${post.author.name}: ${post.content.substring(0, 50)}...`
+  if (navigator.share) {
+    navigator.share({
+      title: 'LinkedIn Post',
+      text: shareText,
+      url: window.location.href,
+    }).catch(console.error)
+  } else {
+    // Fallback: Copy to clipboard or alert
+    navigator.clipboard.writeText(`${shareText} \n ${window.location.href}`)
+    alert('Link copied to clipboard!')
+  }
 }
 </script>
 
@@ -61,25 +131,49 @@ async function submitPost() {
           <Card>
             <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">NEW POST</h2>
             <textarea
+              id="main-post-input"
               v-model="newPostText"
               placeholder="What's on your mind?"
-              class="w-full h-24 p-3 border rounded resize-none focus:outline-none"
+              class="w-full h-24 p-3 border rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               :disabled="loading && posts.length === 0"
             ></textarea>
             <div class="flex justify-end mt-2">
-              <BaseButton variant="primary" size="sm" @click="submitPost" :disabled="!currentUser || loading">
-                {{ loading ? 'Posting...' : 'Post' }}
+              <BaseButton 
+                variant="primary" 
+                size="sm" 
+                @click="submitPost" 
+                :disabled="!currentUser || loading || isPostSuccess"
+                :class="[
+                  'transition-all duration-300 min-w-[80px]',
+                  isPostSuccess ? '!bg-green-600 !border-green-600 !text-white' : ''
+                ]"
+              >
+                <template v-if="loading">Posting...</template>
+                <template v-else-if="isPostSuccess">
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    Posted!
+                  </span>
+                </template>
+                <template v-else>Post</template>
               </BaseButton>
             </div>
           </Card>
 
           <!-- 排序功能 -->
-          <div class="flex justify-end items-center text-sm text-gray-500">
-            <span>SORT BY:</span>
-            <select v-model="sortBy" class="ml-2 border rounded px-2 py-1">
-              <option value="trending">Trending</option>
-              <option value="recent">Recent</option>
-            </select>
+          <div class="flex justify-between items-center text-sm text-gray-500">
+            <div v-if="searchQuery" class="font-medium text-blue-600">
+              Showing results for: "{{ searchQuery }}"
+            </div>
+            <div class="ml-auto flex items-center">
+              <span>SORT BY:</span>
+              <select v-model="sortBy" class="ml-2 border rounded px-2 py-1 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <option value="trending">Trending</option>
+                <option value="recent">Recent</option>
+              </select>
+            </div>
           </div>
 
           <!-- Loading Skeletons -->
@@ -102,53 +196,112 @@ async function submitPost() {
 
           <!-- 動態渲染貼文列表 -->
           <template v-else>
-            <Card
-              v-for="post in sortedPosts"
-              :key="post.id"
-              as="article"
-              class="p-6 space-y-3"
-            >
-              <header class="flex items-center space-x-3">
+            <transition-group name="list" tag="div" class="space-y-6">
+              <Card
+                v-for="post in filteredAndSortedPosts"
+                :key="post.id"
+                as="article"
+                class="p-6 space-y-3 hover:shadow-md transition-shadow overflow-hidden"
+              >
+                <header class="flex items-center space-x-3">
+                  <img
+                    :src="post.author.avatar"
+                    class="w-10 h-10 rounded-full bg-gray-100"
+                  />
+                  <div>
+                    <p class="font-semibold">{{ post.author.name }}</p>
+                    <p class="text-xs text-gray-500">{{ post.author.title }}</p>
+                  </div>
+                </header>
+
+                <p class="text-sm text-gray-700 leading-relaxed">{{ post.content }}</p>
+
                 <img
-                  :src="post.author.avatar"
-                  class="w-10 h-10 rounded-full bg-gray-100"
+                  v-if="post.image"
+                  :src="post.image"
+                  class="w-full rounded mt-2"
                 />
-                <div>
-                  <p class="font-semibold">{{ post.author.name }}</p>
-                  <p class="text-xs text-gray-500">{{ post.author.title }}</p>
+
+                <footer class="flex items-center text-sm text-gray-600 space-x-6 border-t pt-3 mt-4">
+                  <button 
+                    class="flex items-center space-x-1 hover:text-blue-600 transition-colors"
+                    :class="{'text-blue-600 font-bold': post.liked}"
+                    @click="toggleLike(post.id)"
+                  >
+                    <span>👍</span>
+                    <span>{{ post.likes }}</span>
+                    <span>{{ post.liked ? 'Liked' : 'Like' }}</span>
+                  </button>
+                  <button 
+                    @click="toggleCommentSection(post.id)"
+                    class="flex items-center space-x-1 hover:text-blue-600 transition-colors"
+                    :class="{'text-blue-600 font-bold': openComments[post.id]}"
+                  >
+                    <span>💬</span>
+                    <span>{{ post.comments }}</span>
+                    <span>Comment</span>
+                  </button>
+                  <button 
+                    @click="handleShare(post)"
+                    class="ml-auto text-blue-600 font-semibold hover:underline"
+                  >
+                    Share
+                  </button>
+                </footer>
+
+                <!-- 留言區塊 -->
+                <div v-if="openComments[post.id]" class="mt-4 pt-4 border-t space-y-4 bg-gray-50 -mx-6 px-6 pb-4">
+                  <!-- 留言列表 -->
+                  <div v-if="post.commentList && post.commentList.length > 0" class="space-y-4">
+                    <div v-for="comment in post.commentList" :key="comment.id" class="flex space-x-2">
+                      <img :src="comment.author.avatar" class="w-8 h-8 rounded-full" />
+                      <div class="flex-1 bg-white p-2 rounded-lg text-sm shadow-sm">
+                        <div class="flex justify-between">
+                          <span class="font-semibold">{{ comment.author.name }}</span>
+                          <span class="text-xs text-gray-500">{{ comment.time }}</span>
+                        </div>
+                        <p class="text-gray-700 mt-1">{{ comment.content }}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 寫新留言 -->
+                  <div class="flex items-center space-x-2">
+                    <img :src="currentUser?.avatar" class="w-8 h-8 rounded-full" />
+                    <div class="flex-1 relative">
+                      <input 
+                        v-model="commentTexts[post.id]"
+                        @keyup.enter="submitComment(post.id)"
+                        placeholder="Add a comment..."
+                        class="w-full pl-3 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
+                      />
+                      <button 
+                        @click="submitComment(post.id)"
+                        class="absolute right-3 top-2 text-blue-600 font-semibold text-xs"
+                      >
+                        Post
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </header>
+              </Card>
+            </transition-group>
 
-              <p class="text-sm text-gray-700 leading-relaxed">{{ post.content }}</p>
-
-              <img
-                v-if="post.image"
-                :src="post.image"
-                class="w-full rounded"
-              />
-
-              <footer class="flex items-center text-sm text-gray-600 space-x-6 border-t pt-3">
-                <button 
-                  class="flex items-center space-x-1 hover:text-blue-600 transition-colors"
-                  :class="{'text-blue-600 font-bold': post.liked}"
-                  @click="toggleLike(post.id)"
-                >
-                  <span>👍</span>
-                  <span>{{ post.likes }}</span>
-                  <span>{{ post.liked ? 'Liked' : 'Like' }}</span>
-                </button>
-                <button class="flex items-center space-x-1 hover:text-blue-600 transition-colors">
-                  <span>💬</span>
-                  <span>{{ post.comments }}</span>
-                  <span>Comment</span>
-                </button>
-                <button class="ml-auto text-blue-600 font-semibold hover:underline">Share</button>
-              </footer>
-            </Card>
+            <!-- 載入更多 -->
+            <div v-if="hasMore" class="flex justify-center pt-4">
+              <BaseButton 
+                variant="outline" 
+                @click="loadMore" 
+                :disabled="loadingMore"
+                class="w-full max-w-xs"
+              >
+                {{ loadingMore ? 'Loading more...' : 'Load More' }}
+              </BaseButton>
+            </div>
 
             <!-- 沒貼文時的狀態 -->
-            <div v-if="posts.length === 0 && !loading" class="text-center py-10 text-gray-500">
-              No posts found.
+            <div v-if="filteredAndSortedPosts.length === 0 && !loading" class="text-center py-10 text-gray-500 bg-white rounded-lg border border-dashed">
+              No posts found matching your criteria.
             </div>
           </template>
         </main>
@@ -160,13 +313,51 @@ async function submitPost() {
           
           <Card>
             <h2 class="font-semibold text-lg mb-4 pb-2 border-b border-gray-200">Trending Articles</h2>
-            <ul class="space-y-1 text-sm">
-              <li>• How I make cool designs?</li>
-              <li>• Advices for young HR-managers</li>
-              <li>• A little about usability testing</li>
+            <ul v-if="trendingArticles.length > 0" class="space-y-3">
+              <li v-for="article in trendingArticles" :key="article.id" class="flex items-center space-x-3 group cursor-pointer">
+                <img :src="article.image" class="w-12 h-12 rounded object-cover" />
+                <div class="flex-1">
+                  <p class="text-sm font-medium group-hover:text-blue-600 transition-colors line-clamp-2">{{ article.title }}</p>
+                  <p class="text-xs text-gray-500">{{ article.views.toLocaleString() }} viewers</p>
+                </div>
+              </li>
             </ul>
+            <p v-else class="text-sm text-gray-400">Loading articles...</p>
           </Card>
         </aside>
     </div>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+.list-enter-active, .list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+</style>

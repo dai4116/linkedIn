@@ -31,6 +31,13 @@ export class User {
   public avatar: string = ''
 }
 
+export class Comment {
+  public id: number = 0
+  public author: User = new User()
+  public time: string = ''
+  public content: string = ''
+}
+
 export class Post  {
   public id: number = 0
   public author: User = new User()
@@ -40,6 +47,7 @@ export class Post  {
   public likes: number = 0
   public comments: number = 0
   public liked: boolean = false
+  public commentList: Comment[] = []
 }
 
 
@@ -47,4 +55,9 @@ export class Token {
   public userId: number = 0
   public token: string = ''
   public time: number = 0
+}
+
+export class Group {
+  public name: string = ''
+  public avatar: string = ''
 }
